@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'eHealth.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': 'eHealth',
-        # # 'USER': 'eHealth',
-        # # 'PASSWORD': 'eHealth',
-        # # 'HOST': 'localhost',
-        # # 'PORT': '',
+        'NAME': 'ehealth_database',
+        'USER': 'ehealth_user',
+        'PASSWORD': 'ehealth123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
