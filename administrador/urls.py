@@ -5,7 +5,7 @@ urlpatterns = patterns(
     '',
     url(
         r'^$',
-        AfterLogin.as_view(),
-        name='after_login'
+        Index.as_view(),
+        name='index'
     ),
 )

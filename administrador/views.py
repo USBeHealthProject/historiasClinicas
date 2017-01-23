@@ -3,11 +3,11 @@ from django.views.generic import *
 
 
 # Create your views here.
-class AfterLogin(TemplateView):
-    template_name = 'base.html'
+class Index(TemplateView):
+    template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
         context = super(
-            AfterLogin, self).get_context_data(**kwargs)
+            Index, self).get_context_data(**kwargs)
         # dropTable(self.request)
         return context
