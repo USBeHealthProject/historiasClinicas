@@ -8,7 +8,7 @@ class Usuario(models.Model):
         max_length=100, default='-',
         choices=[
             ('admin', 'Administrador'),
-            ('medico', 'Médico'),
+            ('medico', 'Medico'),
             ('paciente', 'Paciente'),
         ]
     )

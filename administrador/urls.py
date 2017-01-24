@@ -8,4 +8,9 @@ urlpatterns = patterns(
         Index.as_view(),
         name='index'
     ),
+    url(
+        r'^register/$',
+        Register.as_view(),
+        name='register'
+    ),
 )
