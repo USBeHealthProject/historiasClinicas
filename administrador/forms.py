@@ -6,14 +6,61 @@ from administrador.models import *
 
 class UsuarioForm(forms.ModelForm):
 
-    ci = forms.CharField(label="Cédula de Identidad", required=True)
-    username = forms.CharField(label="Nombre de usuario", required=True)
+    rol = forms.ChoiceField(
+        required=True,
+        choices=[
+            ('admin', 'Administrador'),
+            ('medico', 'Medico'),
+            ('paciente', 'Paciente'),
+        ]
+    )
+
+    ci = forms.CharField(required=True, label="Cédula de identidad")
+    username = forms.CharField(required=True, label="Nombre de usuario")
     passw = forms.CharField(label="Contraseña", required=True,
                             widget=forms.PasswordInput())
-    name = forms.CharField(label="Nombre", required=True)
-    last_name = forms.CharField(label="Apellido", required=True)
-    email = forms.CharField(label="Correo electrónico", required=True)
-
     class Meta:
-        model = Usuario
-        exclude = ('user',)
+        model = User
+        fields = ("first_name", "last_name", "email")
+
+        error_messages = {
+            'first_name': {
+                'required': "Este campo es requerido"
+            },
+            'last_name': {
+                'required': "Este campo es requerido"
+            },
+            'ci': {
+                'required': "Este campo es requerido"
+            }
+        }
+
+        widgets = {
+            'email': forms.TextInput(attrs={'required': 'true'}),
+            'first_name': forms.TextInput(attrs={'required': 'true'}),
+            'last_name': forms.TextInput(attrs={'required': 'true'})
+        }
+
+        labels = {
+            'email': 'Correo',
+            'first_name': 'Nombre',
+            'last_name': 'Apellido',
+        }
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).count() != 0:
+            raise forms.ValidationError(u'Este nombre de usuario ya está siendo utilizado.')
+        return username
+
+    def save(self, commit=True):
+        user = super(UsuarioForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.username = self.cleaned_data['username']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.is_active = 1
+        password = self.cleaned_data['passw']
+        user.set_password(password)
+        user.save()
+        return user
