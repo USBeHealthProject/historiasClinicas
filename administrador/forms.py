@@ -64,3 +64,13 @@ class UsuarioForm(forms.ModelForm):
         user.set_password(password)
         user.save()
         return user
+
+
+class LoginForm(forms.Form):
+
+    username = forms.CharField(
+        max_length=60, required=True,
+        label='', widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Clave'}), required=True, label='')
