@@ -85,4 +85,4 @@ class Medico_Eventos(models.Model):
     titulo = models.CharField(max_length=500, blank=False)
     descripcion = models.CharField(max_length=500, blank=False)
     institucion = models.CharField(max_length=500, blank=False)
-    date = db.Column(db.Date)
+    date = models.DateField()
