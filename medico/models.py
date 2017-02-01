@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 
+class Especialidad(models.Model): 
+    nombre_especialidad = models.CharField(primary_key=True, max_length=30)
+    
 class Medico(models.Model):    
     cedula = models.IntegerField(primary_key=True, 
             validators=[MaxValueValidator(99999999)])
@@ -9,6 +12,3 @@ class Medico(models.Model):
     fecha_nacimiento = models.DateField()
     especialidad = models.ForeignKey(Especialidad, 
                     on_delete=models.CASCADE)
-    
-class Especialidad(models.Model): 
-    nombre_especialidad = models.CharField(primary_key=True, max_length=30)
