@@ -59,7 +59,7 @@ class Medico_Experiencias(models.Model):
     institucion = models.CharField(max_length=500, blank=False)
 
 
-class Medico_Logros(db.Model):
+class Medico_Logros(models.Model):
     medico = models.ForeignKey(Medico,
                                on_delete=models.CASCADE)
     titulo = models.CharField(max_length=500, blank=False)
