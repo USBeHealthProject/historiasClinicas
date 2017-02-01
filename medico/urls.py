@@ -34,4 +34,19 @@ urlpatterns = [
         HistoriasClinicas.as_view(),
         name='historias_clinicas'
     ),
+    url(
+        r'^buscar-paciente$',
+        BuscarPaciente.as_view(),
+        name='buscar_paciente'
+    ),
+    url(
+        r'^buscar-medico$',
+        BuscarMedico.as_view(),
+        name='buscar_medico'
+    ),
+    url(
+        r'^ver-citas/(?P<id>\w+)$',
+        VerCitas.as_view(),
+        name='ver_citas'
+    ),
 ]

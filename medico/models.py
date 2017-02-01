@@ -18,7 +18,7 @@ class Medico(models.Model):
     telefono = models.CharField(max_length=15)
     direccion = models.CharField(max_length=100)
     usuario = models.ForeignKey(Usuario,
-                             on_delete=models.CASCADE)
+                                on_delete=models.CASCADE)
 
 
 class Medico_Especialidad(models.Model):

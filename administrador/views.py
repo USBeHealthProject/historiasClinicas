@@ -11,7 +11,6 @@ from administrador.models import *
 from administrador.controllers import *
 
 
-# Create your views here.
 class Index(TemplateView):
     template_name = 'index.html'
 
@@ -107,3 +106,7 @@ class Success(TemplateView):
 
 class Home(TemplateView):
     template_name = 'home.html'
+
+
+class Inbox(TemplateView):
+    template_name = 'administrador/inbox.html'

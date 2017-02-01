@@ -21,3 +21,15 @@ class VerConsultas(TemplateView):
 
 class HistoriasClinicas(TemplateView):
     template_name = 'medico/historias_clinicas.html'
+
+
+class BuscarPaciente(TemplateView):
+    template_name = 'medico/buscar.html'
+
+
+class BuscarMedico(TemplateView):
+    template_name = 'medico/buscar.html'
+
+
+class VerCitas(TemplateView):
+    template_name = 'medico/ver_citas.html'
