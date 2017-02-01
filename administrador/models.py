@@ -8,3 +8,10 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Inbox(models.Model):
+    usuario = models.ForeignKey(Usuario,
+                                on_delete=models.CASCADE)
+    asunto = models.CharField(max_length=100, blank=False)
+    enviado_por = models.CharField(max_length=100, blank=False)
