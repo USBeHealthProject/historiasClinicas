@@ -13,11 +13,24 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Inbox',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('asunto', models.CharField(max_length=100)),
+                ('enviado_por', models.CharField(max_length=100)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Usuario',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('rol', models.CharField(default=b'-', max_length=100, choices=[(b'admin', b'Administrador'), (b'medico', b'Medico'), (b'paciente', b'Paciente')])),
+                ('ci', models.CharField(default=b'', max_length=100)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
+        ),
+        migrations.AddField(
+            model_name='inbox',
+            name='usuario',
+            field=models.ForeignKey(to='administrador.Usuario'),
         ),
     ]
