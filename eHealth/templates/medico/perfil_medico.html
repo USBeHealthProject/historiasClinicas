@@ -1,4 +1,13 @@
 {% extends "base.html" %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1%}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
 {% load static %}
 {% block content %}
   <div id="cuerpoHeredado">
@@ -27,31 +36,67 @@
               </div>
               <!-- edit form column -->
               <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
-                {% if mensaje %}
-                <p class="error"> <i class="fa fa-exclamation-triangle"></i>  <strong>{{ mensaje }}</strong></p>
-                {% endif %}
                 <form action="{% url 'perfil_medico' user.pk %}" method=POST>
-                  {{ form.ci.label }}
-                  {{ ci }}
-                  {{ form.username.label }}
-                  {{ username }}
-                  {{ form.name.label }}
-                  {{ form.name }}
-                  {{ form.last_name.label }}
-                  {{ form.last_name }}
-                  {{ form.email.label }}
-                  {{ form.email }}
-                  {{ form.sex.label }}
-                  {{ form.sex }}
-                  {{ form.date_of_birth.label }}
-                  {{ form.date_of_birth }}
-                  {{ form.marital_status.label }}
-                  {{ form.marital_status }}
-                  {{ form.telephone.label }}
-                  {{ form.telephone }}
-                  {{ form.address.label }}
-                  {{ form.address }}
-                  {{ form.submit }}
+                  {% csrf_token %}
+
+                  {% bootstrap_form_errors form %}
+
+                  <div id="rest_form">
+                    <div class="form-group">
+                      <label for="id_ci">Cédula</label>
+                      <span>{{medico.usuario.ci}}</span>
+                    </div>
+                    <label for="id_username">Nombre de usuario</label>
+                    <span>{{medico.usuario.user.username}}</span>
+                    <label for="id_first_name">Nombre</label>
+                    {% bootstrap_field form.first_name layout="inline" %}
+                    <label for="id_last_name">Apellido</label>
+                    {% bootstrap_field form.last_name layout="inline" %}
+                    <label for="id_email">Correo</label>
+                    {% bootstrap_field form.email layout="inline" %}
+                    <div class="form-group">
+                      <label for="id_sex">Sexo</label>
+                      <select name="sex">
+                        <option selected="selected">{{medico.sexo}}</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="id_birth_date">Fecha de nacimiento</label>
+                      <input class="form-control datepicker" id="id_birth_date" name="birth_date" placeholder="Fecha de nacimiento" title="" type="text" value="{{medico.fecha_nacimiento}}"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="id_marital_status">Estado civil</label>
+                      <select name="marital_status">
+                        <option selected="selected">{{medico.estado_civil}}</option>
+                        <option value="Soltero">Soltero</option>
+                        <option value="Casado">Casado</option>
+                        <option value="Viudo">Viudo</option>
+                        <option value="Divorciado">Divorciado</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="id_phone">Teléfono</label>
+                      <input class="form-control" id="id_phone" name="phone" placeholder="Teléfono" title="" type="text" value="{{medico.telefono}}"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="id_address">Dirección</label>
+                      <input class="form-control" id="id_address" name="address" placeholder="Dirección" title="" type="text" value="{{medico.direccion}}"/>
+                    </div>
+                  {% buttons %}
+                      <div class="col-md-3"></div>
+                      <div class="col-sm-4 col-md-6 text-center">
+                          <button type="submit" id="id_submit" class="btn btn-lg">
+                              Guardar
+                          </button>
+                          <br>
+                          <br>
+                      </div>
+                      <div class="col-md-3"></div>
+                  </div>
+                  {% endbuttons %}
                 </form>
               </div>
             </div>
@@ -169,4 +214,13 @@
         </div>
       </div>
   </div>
+{% endblock %}
+{% block custom_script %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<script src="{% static 'plugins/datepicker/locales/bootstrap-datepicker.es.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $( ".datepicker" ).datepicker({ format: 'dd-mm-yyyy' });
+});
+</script>
 {% endblock %}

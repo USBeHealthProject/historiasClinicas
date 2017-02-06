@@ -12,7 +12,7 @@ class Medico(models.Model):
                                  validators=[MaxValueValidator(99999999)])
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    fecha_nacimiento = models.DateField()
+    fecha_nacimiento = models.DateField(null=True)
     sexo = models.CharField(max_length=10)
     estado_civil = models.CharField(max_length=15)
     telefono = models.CharField(max_length=15)
