@@ -37,9 +37,10 @@ class PerfilMedico(CreateView):
                 'email': medico.usuario.user.email}
         form = UsuarioForm(initial=data)
         estudios = Medico_Estudios.objects.filter(medico=medico)
-        print estudios
+        logros = Medico_Logros.objects.filter(medico=medico)
         context['medico'] = medico
         context['studies'] = estudios
+        context['awards'] = logros
         context['form'] = form
         return context
 
@@ -148,7 +149,6 @@ class ModificarEstudios(CreateView):
         form = Medico_EstudiosForm(request.POST)
         if form.is_valid():
             estudio_id = kwargs['id']
-            estudio = Medico_Estudios.objects.get(pk=estudio_id)
             titulo = request.POST['titulo']
             fecha_graduacion = request.POST['fecha_graduacion']
             descripcion = request.POST['descripcion']
@@ -172,11 +172,91 @@ class ModificarEstudios(CreateView):
                                       context_instance=RequestContext(request))
 
 
-def eliminar_estudios(request, id):
-    estudio = Medico_Estudios.objects.get(pk=id)
-    estudio.delete()
-    return HttpResponseRedirect(reverse_lazy(
-        'perfil_medico', kwargs={'id': request.user.pk}))
+class AgregarReconocimientos(CreateView):
+    template_name = 'medico/agregar_reconocimientos.html'
+    form_class = Medico_LogrosForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            AgregarReconocimientos, self).get_context_data(**kwargs)
+
+        context['title'] = 'Agregar'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_LogrosForm(request.POST)
+        if form.is_valid():
+            user_pk = request.user.pk
+            titulo = request.POST['titulo']
+            fecha = request.POST['fecha']
+            descripcion = request.POST['descripcion']
+            value = agregar_reconocimientos(user_pk, titulo, fecha,
+                                            descripcion)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_reconocimientos.html',
+                                          {'form': form,
+                                           'title': 'Agregar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_reconocimientos.html',
+                                      {'form': form,
+                                       'title': 'Agregar'},
+                                      context_instance=RequestContext(request))
+
+
+class ModificarReconocimientos(CreateView):
+    template_name = 'medico/agregar_reconocimientos.html'
+    form_class = Medico_LogrosForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarReconocimientos, self).get_context_data(**kwargs)
+
+        context['title'] = 'Modificar'
+        logro = Medico_Logros.objects.get(pk=self.kwargs['id'])
+        data = {'titulo': logro.titulo,
+                'fecha': logro.fecha,
+                'descripcion': logro.descripcion}
+        form = Medico_LogrosForm(initial=data)
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_LogrosForm(request.POST)
+        if form.is_valid():
+            logro_id = kwargs['id']
+            titulo = request.POST['titulo']
+            fecha = request.POST['fecha']
+            descripcion = request.POST['descripcion']
+            value = modificar_logros(logro_id, titulo, fecha,
+                                     descripcion)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_reconocimientos.html',
+                                          {'form': form,
+                                           'title': 'Modificar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_reconocimientos.html',
+                                      {'form': form,
+                                       'title': 'Modificar'},
+                                      context_instance=RequestContext(request))
 
 
 class VerConsultas(TemplateView):

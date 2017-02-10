@@ -36,8 +36,23 @@ urlpatterns = [
     ),
     url(
         r'^eliminar-estudios/(?P<id>\w+)$',
-        'medico.views.eliminar_estudios',
+        'medico.controllers.eliminar_estudios',
         name='eliminar_estudios'
+    ),
+    url(
+        r'^agregar-reconocimientos/(?P<id>\w+)$',
+        AgregarReconocimientos.as_view(),
+        name='agregar_reconocimientos'
+    ),
+    url(
+        r'^modificar-reconocimientos/(?P<id>\w+)$',
+        ModificarReconocimientos.as_view(),
+        name='modificar_reconocimientos'
+    ),
+    url(
+        r'^eliminar-reconocimientos/(?P<id>\w+)$',
+        'medico.controllers.eliminar_reconocimientos',
+        name='eliminar_reconocimientos'
     ),
     url(
         r'^ver_consultas/(?P<id>\w+)$',
