@@ -141,19 +141,19 @@
           <center><h2>Publicaciones</h2></center>
           <br>
             {% for publication in publications %}
-                <h4>{{publication.title}} - <i>{{publication.date}}</i></h4>
+                <h4>{{publication.titulo}} - <i>{{publication.fecha}}</i></h4>
                 <div class="row">
                     <div class="col-md-8 ">
-                        <p>{{publication.description}}</p>
+                        <p>{{publication.descripcion}}</p>
                     </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <a href=""> Modificar </a>
-                        <a href=""> Eliminar </a>
+                        <a href="{% url 'modificar_publicaciones' publication.pk %}"> Modificar </a>
+                        <a href="{% url 'eliminar_publicaciones' publication.pk %}"> Eliminar </a>
                     </div>
                 </div>
                 <hr>
             {% endfor%}
-            <center><a href=""> Agregar Publicación </a></center>
+            <center><a href="{% url 'agregar_publicaciones' user.pk %}"> Agregar Publicación </a></center>
         </div>
         <div id="menu4" class="tab-pane fade">
           <center><h3>Experiencias</h3></center>

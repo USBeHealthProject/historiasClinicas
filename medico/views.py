@@ -38,9 +38,11 @@ class PerfilMedico(CreateView):
         form = UsuarioForm(initial=data)
         estudios = Medico_Estudios.objects.filter(medico=medico)
         logros = Medico_Logros.objects.filter(medico=medico)
+        publicaciones = Medico_Publicaciones.objects.filter(medico=medico)
         context['medico'] = medico
         context['studies'] = estudios
         context['awards'] = logros
+        context['publications'] = publicaciones
         context['form'] = form
         return context
 
@@ -254,6 +256,108 @@ class ModificarReconocimientos(CreateView):
                                               request))
         else:
             return render_to_response('medico/agregar_reconocimientos.html',
+                                      {'form': form,
+                                       'title': 'Modificar'},
+                                      context_instance=RequestContext(request))
+
+
+class AgregarPublicaciones(CreateView):
+    template_name = 'medico/agregar_publicaciones.html'
+    form_class = Medico_PublicacionesForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            AgregarPublicaciones, self).get_context_data(**kwargs)
+
+        context['title'] = 'Agregar'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_PublicacionesForm(request.POST)
+        if form.is_valid():
+            user_pk = request.user.pk
+            titulo = request.POST['titulo']
+            autores = request.POST['autores']
+            descripcion = request.POST['descripcion']
+            revista = request.POST['revista']
+            numero = request.POST['numero']
+            volumen = request.POST['volumen']
+            fecha = request.POST['fecha']
+            value = agregar_publicaciones(user_pk, titulo, autores,
+                                          descripcion, revista,
+                                          numero, volumen, fecha)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_publicaciones.html',
+                                          {'form': form,
+                                           'title': 'Agregar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_publicaciones.html',
+                                      {'form': form,
+                                       'title': 'Agregar'},
+                                      context_instance=RequestContext(request))
+
+
+class ModificarPublicaciones(CreateView):
+    template_name = 'medico/agregar_publicaciones.html'
+    form_class = Medico_PublicacionesForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarPublicaciones, self).get_context_data(**kwargs)
+
+        context['title'] = 'Modificar'
+        publicacion = Medico_Publicaciones.objects.get(pk=self.kwargs['id'])
+        data = {'titulo': publicacion.titulo,
+                'autores': publicacion.autores,
+                'descripcion': publicacion.descripcion,
+                'revista': publicacion.revista,
+                'numero': publicacion.numero,
+                'volumen': publicacion.volumen,
+                'fecha': publicacion.fecha,
+                }
+        form = Medico_PublicacionesForm(initial=data)
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_PublicacionesForm(request.POST)
+        if form.is_valid():
+            publicacion_id = kwargs['id']
+            titulo = request.POST['titulo']
+            autores = request.POST['autores']
+            descripcion = request.POST['descripcion']
+            revista = request.POST['revista']
+            numero = request.POST['numero']
+            volumen = request.POST['volumen']
+            fecha = request.POST['fecha']
+            value = modificar_publicaciones(publicacion_id, titulo, autores,
+                                            descripcion, revista,
+                                            numero, volumen, fecha)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_publicaciones.html',
+                                          {'form': form,
+                                           'title': 'Modificar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_publicaciones.html',
                                       {'form': form,
                                        'title': 'Modificar'},
                                       context_instance=RequestContext(request))

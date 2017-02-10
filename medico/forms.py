@@ -16,3 +16,10 @@ class Medico_LogrosForm(forms.ModelForm):
     class Meta:
         model = Medico_Logros
         exclude = ("medico",)
+
+
+class Medico_PublicacionesForm(forms.ModelForm):
+
+    class Meta:
+        model = Medico_Publicaciones
+        exclude = ("medico",)

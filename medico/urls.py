@@ -55,6 +55,21 @@ urlpatterns = [
         name='eliminar_reconocimientos'
     ),
     url(
+        r'^agregar-publicaciones/(?P<id>\w+)$',
+        AgregarPublicaciones.as_view(),
+        name='agregar_publicaciones'
+    ),
+    url(
+        r'^modificar-publicaciones/(?P<id>\w+)$',
+        ModificarPublicaciones.as_view(),
+        name='modificar_publicaciones'
+    ),
+    url(
+        r'^eliminar-publicaciones/(?P<id>\w+)$',
+        'medico.controllers.eliminar_publicaciones',
+        name='eliminar_publicaciones'
+    ),
+    url(
         r'^ver_consultas/(?P<id>\w+)$',
         VerConsultas.as_view(),
         name='ver_consultas'

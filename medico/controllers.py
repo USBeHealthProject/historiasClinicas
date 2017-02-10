@@ -150,3 +150,65 @@ def eliminar_reconocimientos(request, id):
     logro.delete()
     return HttpResponseRedirect(reverse_lazy(
         'perfil_medico', kwargs={'id': request.user.pk}))
+
+
+def agregar_publicaciones(user_pk, titulo, autores, descripcion, revista,
+                          numero, volumen, fecha):
+    try:
+        user = User.objects.get(pk=user_pk)
+        usuario = Usuario.objects.get(user=user)
+        medico = Medico.objects.get(usuario=usuario)
+        try:
+            fecha = datetime.datetime.strptime(fecha,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha is None:
+                fecha = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha = cal.parseDT(fecha, now)[0]
+        logros = Medico_Publicaciones(medico=medico, titulo=titulo,
+                                      autores=autores, descripcion=descripcion,
+                                      revista=revista, numero=numero,
+                                      volumen=volumen, fecha=fecha)
+        logros.save()
+        return True
+    except:
+        return False
+
+
+def modificar_publicaciones(publicacion_id, titulo, autores, descripcion,
+                            revista, numero, volumen, fecha):
+    try:
+        publicacion = Medico_Publicaciones.objects.get(pk=publicacion_id)
+        try:
+            fecha = datetime.datetime.strptime(fecha,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha is None:
+                fecha = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha = cal.parseDT(fecha, now)[0]
+        publicacion.titulo = titulo
+        publicacion.autores = autores
+        publicacion.descripcion = descripcion
+        publicacion.revista = revista
+        publicacion.numero = numero
+        publicacion.volumen = volumen
+        publicacion.fecha = fecha
+        publicacion.save()
+        return True
+    except:
+        return False
+
+
+def eliminar_publicaciones(request, id):
+    publicacion = Medico_Publicaciones.objects.get(pk=id)
+    publicacion.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'perfil_medico', kwargs={'id': request.user.pk}))
