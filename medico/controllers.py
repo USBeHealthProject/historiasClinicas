@@ -212,3 +212,87 @@ def eliminar_publicaciones(request, id):
     publicacion.delete()
     return HttpResponseRedirect(reverse_lazy(
         'perfil_medico', kwargs={'id': request.user.pk}))
+
+
+def agregar_experiencias(user_pk, titulo, descripcion, fecha_inicio, fecha_fin,
+                         institucion):
+    try:
+        user = User.objects.get(pk=user_pk)
+        usuario = Usuario.objects.get(user=user)
+        medico = Medico.objects.get(usuario=usuario)
+        try:
+            fecha_inicio = datetime.datetime.strptime(fecha_inicio,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha_inicio is None:
+                fecha_inicio = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha_inicio = cal.parseDT(fecha_inicio, now)[0]
+        try:
+            fecha_fin = datetime.datetime.strptime(fecha_fin,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha_fin is None:
+                fecha_fin = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha_fin = cal.parseDT(fecha_fin, now)[0]
+        experiencias = Medico_Experiencias(medico=medico, titulo=titulo,
+                                           descripcion=descripcion,
+                                           fecha_inicio=fecha_inicio,
+                                           fecha_fin=fecha_fin,
+                                           institucion=institucion)
+        experiencias.save()
+        return True
+    except:
+        return False
+
+
+def modificar_experiencias(experiencia_id, titulo, descripcion, fecha_inicio,
+                           fecha_fin, institucion):
+    try:
+        experiencia = Medico_Experiencias.objects.get(
+            pk=experiencia_id)
+        try:
+            fecha_inicio = datetime.datetime.strptime(fecha_inicio,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha_inicio is None:
+                fecha_inicio = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha_inicio = cal.parseDT(fecha_inicio, now)[0]
+        try:
+            fecha_fin = datetime.datetime.strptime(fecha_fin,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha_fin is None:
+                fecha_fin = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha_fin = cal.parseDT(fecha_fin, now)[0]
+        experiencia.titulo = titulo
+        experiencia.descripcion = descripcion
+        experiencia.fecha_inicio = fecha_inicio
+        experiencia.fecha_fin = fecha_fin
+        experiencia.institucion = institucion
+        experiencia.save()
+        return True
+    except:
+        return False
+
+
+def eliminar_experiencias(request, id):
+    experiencia = Medico_Experiencias.objects.get(pk=id)
+    experiencia.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'perfil_medico', kwargs={'id': request.user.pk}))

@@ -70,6 +70,21 @@ urlpatterns = [
         name='eliminar_publicaciones'
     ),
     url(
+        r'^agregar-experiencias/(?P<id>\w+)$',
+        AgregarExperiencias.as_view(),
+        name='agregar_experiencias'
+    ),
+    url(
+        r'^modificar-experiencias/(?P<id>\w+)$',
+        ModificarExperiencias.as_view(),
+        name='modificar_experiencias'
+    ),
+    url(
+        r'^eliminar-experiencias/(?P<id>\w+)$',
+        'medico.controllers.eliminar_experiencias',
+        name='eliminar_experiencias'
+    ),
+    url(
         r'^ver_consultas/(?P<id>\w+)$',
         VerConsultas.as_view(),
         name='ver_consultas'

@@ -159,20 +159,20 @@
           <center><h3>Experiencias</h3></center>
          <br>
             {% for experience in experiences %}
-                <h4>{{experience.title}} - <i>{{experience.institution}}</i></h4>
-                <h5><b> {{experience.date_of_start}} - {{experience.date_of_finish}}</b></h5>
+                <h4>{{experience.titulo}} - <i>{{experience.institucion}}</i></h4>
+                <h5><b> {{experience.fecha_inicio}} - {{experience.fecha_fin}}</b></h5>
                 <div class="row">
                     <div class="col-md-8 ">
-                        <p>{{experience.description}}</p>
+                        <p>{{experience.descripcion}}</p>
                     </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <a href="">  Modificar </a>
-                        <a href=""> Eliminar </a>
+                        <a href="{% url 'modificar_experiencias' experience.pk %}">  Modificar </a>
+                        <a href="{% url 'eliminar_experiencias' experience.pk %}"> Eliminar </a>
                     </div>
                 </div>
                 <hr>
             {% endfor%}
-            <center><a href=""> Agregar Experiencia</a></center>
+            <center><a href="{% url 'agregar_experiencias' user.pk %}"> Agregar Experiencia</a></center>
         </div>
         <div id="menu5" class="tab-pane fade">
           <center><h3>Habilidades</h3></center>

@@ -12,7 +12,7 @@
 {% block content %}
   <div id="cuerpoHeredado">
     <br>
-    <h2>{{title}} Publicaciones</h2>
+    <h2>{{title}} Experiencias</h2>
     <form action="" method=POST>
 
       {% csrf_token %}
@@ -21,18 +21,14 @@
       </div>
       <label for="id_titulo">Título</label>
       {% bootstrap_field form.titulo layout="inline" %}
-      <label for="id_autores">Autores</label>
-      {% bootstrap_field form.autores layout="inline" %}
       <label for="id_descripcion">Descripción</label>
       {% bootstrap_field form.descripcion layout="inline" %}
-      <label for="id_revista">Revista</label>
-      {% bootstrap_field form.revista layout="inline" %}
-      <label for="id_numero">Número</label>
-      {% bootstrap_field form.numero layout="inline" %}
-      <label for="id_volumen">Volumen</label>
-      {% bootstrap_field form.volumen layout="inline" %}
-      <label for="id_fecha">Fecha</label>
-      {% bootstrap_field form.fecha layout="inline" %}
+      <label for="id_fecha_inicio">Fecha inicio</label>
+      {% bootstrap_field form.fecha_inicio layout="inline" %}
+      <label for="id_fecha_fin">Fecha fin</label>
+      {% bootstrap_field form.fecha_fin layout="inline" %}
+      <label for="id_institucion">Institución</label>
+      {% bootstrap_field form.institucion layout="inline" %}
       {% buttons %}
         <div class="col-md-3"></div>
         <div class="col-sm-4 col-md-6 text-center">
@@ -53,7 +49,8 @@
 <script src="{% static 'plugins/datepicker/locales/bootstrap-datepicker.es.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $( "#id_fecha" ).datepicker({ format: 'yyyy-mm-dd' });
+  $( "#id_fecha_inicio" ).datepicker({ format: 'yyyy-mm-dd' });
+  $( "#id_fecha_fin" ).datepicker({ format: 'yyyy-mm-dd' });
 });
 </script>
 {% endblock %}

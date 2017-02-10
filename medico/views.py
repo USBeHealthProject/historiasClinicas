@@ -39,10 +39,12 @@ class PerfilMedico(CreateView):
         estudios = Medico_Estudios.objects.filter(medico=medico)
         logros = Medico_Logros.objects.filter(medico=medico)
         publicaciones = Medico_Publicaciones.objects.filter(medico=medico)
+        experiencias = Medico_Experiencias.objects.filter(medico=medico)
         context['medico'] = medico
         context['studies'] = estudios
         context['awards'] = logros
         context['publications'] = publicaciones
+        context['experiences'] = experiencias
         context['form'] = form
         return context
 
@@ -358,6 +360,101 @@ class ModificarPublicaciones(CreateView):
                                               request))
         else:
             return render_to_response('medico/agregar_publicaciones.html',
+                                      {'form': form,
+                                       'title': 'Modificar'},
+                                      context_instance=RequestContext(request))
+
+
+class AgregarExperiencias(CreateView):
+    template_name = 'medico/agregar_experiencias.html'
+    form_class = Medico_ExperienciasForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            AgregarExperiencias, self).get_context_data(**kwargs)
+
+        context['title'] = 'Agregar'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_ExperienciasForm(request.POST)
+        if form.is_valid():
+            user_pk = request.user.pk
+            titulo = request.POST['titulo']
+            descripcion = request.POST['descripcion']
+            fecha_inicio = request.POST['fecha_inicio']
+            fecha_fin = request.POST['fecha_fin']
+            institucion = request.POST['institucion']
+            value = agregar_experiencias(user_pk, titulo, descripcion,
+                                         fecha_inicio, fecha_fin, institucion)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_experiencias.html',
+                                          {'form': form,
+                                           'title': 'Agregar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_experiencias.html',
+                                      {'form': form,
+                                       'title': 'Agregar'},
+                                      context_instance=RequestContext(request))
+
+
+class ModificarExperiencias(CreateView):
+    template_name = 'medico/agregar_experiencias.html'
+    form_class = Medico_ExperienciasForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarExperiencias, self).get_context_data(**kwargs)
+
+        context['title'] = 'Modificar'
+        publicacion = Medico_Experiencias.objects.get(pk=self.kwargs['id'])
+        data = {'titulo': publicacion.titulo,
+                'descripcion': publicacion.descripcion,
+                'fecha_inicio': publicacion.fecha_inicio,
+                'fecha_fin': publicacion.fecha_fin,
+                'institucion': publicacion.institucion,
+                }
+        form = Medico_ExperienciasForm(initial=data)
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_ExperienciasForm(request.POST)
+        if form.is_valid():
+            experiencia_id = kwargs['id']
+            titulo = request.POST['titulo']
+            descripcion = request.POST['descripcion']
+            fecha_inicio = request.POST['fecha_inicio']
+            fecha_fin = request.POST['fecha_fin']
+            institucion = request.POST['institucion']
+            value = modificar_experiencias(experiencia_id, titulo, descripcion,
+                                           fecha_inicio, fecha_fin,
+                                           institucion)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_experiencias.html',
+                                          {'form': form,
+                                           'title': 'Modificar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_experiencias.html',
                                       {'form': form,
                                        'title': 'Modificar'},
                                       context_instance=RequestContext(request))
