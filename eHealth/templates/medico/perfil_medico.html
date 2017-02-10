@@ -111,8 +111,8 @@
                         <p>{{study.descripcion}}</p>
                     </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <a href="{% url 'modificar_estudios' user.pk %}"> Modificar </a>
-                        <a href="">Eliminar</button>
+                        <a href="{% url 'modificar_estudios' study.pk %}"> Modificar </a>
+                        <a href="{% url 'eliminar_estudios' study.pk %}">Eliminar</button>
                     </div>
                 </div>
                 <hr>

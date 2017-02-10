@@ -13,11 +13,8 @@
   <div id="cuerpoHeredado">
     <br>
     <h2>{{title}} Estudios</h2>
-    {% if title == "Modificar" %}
-    <form action="{% url 'modificar_estudios' user.pk %}" method=POST>
-    {% else %}
-    <form action="{% url 'agregar_estudios' user.pk %}" method=POST>
-    {% endif %}
+    <form action="" method=POST>
+
       {% csrf_token %}
       <div class="hidden">
           {% bootstrap_form_errors form %}

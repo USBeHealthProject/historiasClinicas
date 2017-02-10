@@ -31,8 +31,13 @@ urlpatterns = [
     ),
     url(
         r'^modificar-estudios/(?P<id>\w+)$',
-        'medico.views.modificar_estudios',
+        ModificarEstudios.as_view(),
         name='modificar_estudios'
+    ),
+    url(
+        r'^eliminar-estudios/(?P<id>\w+)$',
+        'medico.views.eliminar_estudios',
+        name='eliminar_estudios'
     ),
     url(
         r'^ver_consultas/(?P<id>\w+)$',

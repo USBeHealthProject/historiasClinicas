@@ -103,7 +103,6 @@ class AgregarEstudios(CreateView):
             fecha_graduacion = request.POST['fecha_graduacion']
             descripcion = request.POST['descripcion']
             institucion = request.POST['institucion']
-            print "ni he entrado"
             value = agregar_estudios(user_pk, titulo, fecha_graduacion,
                                      descripcion, institucion)
             if value is True:
@@ -111,19 +110,73 @@ class AgregarEstudios(CreateView):
                     'perfil_medico', kwargs={'id': request.user.pk}))
             else:
                 return render_to_response('medico/agregar_estudios.html',
-                                          {'form': form},
+                                          {'form': form,
+                                           'title': 'Agregar'},
                                           context_instance=RequestContext(
                                               request))
         else:
             return render_to_response('medico/agregar_estudios.html',
-                                      {'form': form},
+                                      {'form': form,
+                                       'title': 'Agregar'},
                                       context_instance=RequestContext(request))
 
 
-def modificar_estudios(request):
-    user = User.objects.get(pk=kwargs['id'])
-    usuario = Usuario.objects.get(user=user)
-    medico = Medico.objects.get(usuario=usuario)
+class ModificarEstudios(CreateView):
+    template_name = 'medico/agregar_estudios.html'
+    form_class = Medico_EstudiosForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarEstudios, self).get_context_data(**kwargs)
+
+        context['title'] = 'Modificar'
+        print self.request.GET
+        estudio = Medico_Estudios.objects.get(pk=self.kwargs['id'])
+        data = {'titulo': estudio.titulo,
+                'fecha_graduacion': estudio.fecha_graduacion,
+                'descripcion': estudio.descripcion,
+                'institucion': estudio.institucion}
+        form = Medico_EstudiosForm(initial=data)
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_EstudiosForm(request.POST)
+        if form.is_valid():
+            estudio_id = kwargs['id']
+            estudio = Medico_Estudios.objects.get(pk=estudio_id)
+            titulo = request.POST['titulo']
+            fecha_graduacion = request.POST['fecha_graduacion']
+            descripcion = request.POST['descripcion']
+            institucion = request.POST['institucion']
+            value = modificar_estudios(estudio_id, titulo,
+                                       fecha_graduacion,
+                                       descripcion, institucion)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_estudios.html',
+                                          {'form': form,
+                                           'title': 'Modificar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_estudios.html',
+                                      {'form': form,
+                                       'title': 'Modificar'},
+                                      context_instance=RequestContext(request))
+
+
+def eliminar_estudios(request, id):
+    estudio = Medico_Estudios.objects.get(pk=id)
+    estudio.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'perfil_medico', kwargs={'id': request.user.pk}))
 
 
 class VerConsultas(TemplateView):
