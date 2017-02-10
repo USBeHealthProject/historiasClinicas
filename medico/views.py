@@ -36,7 +36,10 @@ class PerfilMedico(CreateView):
                 'last_name': medico.usuario.user.last_name,
                 'email': medico.usuario.user.email}
         form = UsuarioForm(initial=data)
+        estudios = Medico_Estudios.objects.filter(medico=medico)
+        print estudios
         context['medico'] = medico
+        context['studies'] = estudios
         context['form'] = form
         return context
 
@@ -74,6 +77,53 @@ class PerfilMedico(CreateView):
             return render_to_response('medico/perfil_medico.html',
                                       {'form': form},
                                       context_instance=RequestContext(request))
+
+
+class AgregarEstudios(CreateView):
+    template_name = 'medico/agregar_estudios.html'
+    form_class = Medico_EstudiosForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            AgregarEstudios, self).get_context_data(**kwargs)
+
+        context['title'] = 'Agregar'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_EstudiosForm(request.POST)
+        if form.is_valid():
+            user_pk = request.user.pk
+            titulo = request.POST['titulo']
+            fecha_graduacion = request.POST['fecha_graduacion']
+            descripcion = request.POST['descripcion']
+            institucion = request.POST['institucion']
+            print "ni he entrado"
+            value = agregar_estudios(user_pk, titulo, fecha_graduacion,
+                                     descripcion, institucion)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'perfil_medico', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_estudios.html',
+                                          {'form': form},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_estudios.html',
+                                      {'form': form},
+                                      context_instance=RequestContext(request))
+
+
+def modificar_estudios(request):
+    user = User.objects.get(pk=kwargs['id'])
+    usuario = Usuario.objects.get(user=user)
+    medico = Medico.objects.get(usuario=usuario)
 
 
 class VerConsultas(TemplateView):

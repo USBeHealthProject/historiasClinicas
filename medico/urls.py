@@ -25,6 +25,16 @@ urlpatterns = [
         name='perfil_medico'
     ),
     url(
+        r'^agregar-estudios/(?P<id>\w+)$',
+        AgregarEstudios.as_view(),
+        name='agregar_estudios'
+    ),
+    url(
+        r'^modificar-estudios/(?P<id>\w+)$',
+        'medico.views.modificar_estudios',
+        name='modificar_estudios'
+    ),
+    url(
         r'^ver_consultas/(?P<id>\w+)$',
         VerConsultas.as_view(),
         name='ver_consultas'

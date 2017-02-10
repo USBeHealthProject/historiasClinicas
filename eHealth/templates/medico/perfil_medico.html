@@ -105,19 +105,19 @@
           <center><h2>Estudios</h2></center>
           <br>
             {% for study in studies %}
-                <h4>{{study.title}} - <i>{{study.institution}} {{study.date_of_graduation}}</i></h4>
+                <h4>{{study.titulo}} - <i>{{study.institucion}} {{study.fecha_graduacion}}</i></h4>
                 <div class="row">
                     <div class="col-md-8 ">
-                        <p>{{study.description}}</p>
+                        <p>{{study.descripcion}}</p>
                     </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <a href=""> Modificar </a>
+                        <a href="{% url 'modificar_estudios' user.pk %}"> Modificar </a>
                         <a href="">Eliminar</button>
                     </div>
                 </div>
                 <hr>
             {% endfor%}
-            <center><a  href="">Agregar Estudios</a></center>
+            <center><a  href="{% url 'agregar_estudios' user.pk %}">Agregar Estudios</a></center>
         </div>
         <div id="menu2" class="tab-pane fade">
           <center><h2>Reconocimientos</h2></center>
