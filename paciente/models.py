@@ -25,7 +25,24 @@ class Historiadetriaje(models.Model):
                                  on_delete=models.CASCADE)
     medico_triaje = models.ForeignKey(Medico,
                                       on_delete=models.CASCADE)
-
+    antecedentes_personales = models.CharField(max_length=500)
+    antecedentes_familiares = models.CharField(max_length=500)
+    motivo_consulta = models.CharField(max_length=200)
+    enfermedad_actual = models.CharField(max_length=200)
+    peso = models.IntegerField()
+    talla = models.IntegerField()
+    signos_vitales = models.CharField(max_length=200)
+    piel = models.CharField(max_length=200)
+    ojos = models.CharField(max_length=200)
+    fosas_nasales = models.CharField(max_length=200)
+    conductos_auditivos = models.CharField(max_length=200)
+    cavidad_oral = models.CharField(max_length=200)
+    cuello = models.CharField(max_length=200)
+    columna = models.CharField(max_length=200)
+    torax = models.CharField(max_length=200)
+    abdomen = models.CharField(max_length=200)
+    extremidades = models.CharField(max_length=200)
+    genitales = models.CharField(max_length=200)
 
 class Historia(models.Model):
     paciente = models.ForeignKey(Paciente,
