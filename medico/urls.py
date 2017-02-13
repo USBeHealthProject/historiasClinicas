@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from medico import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^historias/$', views.HistoriasClinicas.as_view(), name='historias_clinicas'),
+    url(r'^historias/new/$', views.HistoriasClinicasCrear.as_view(), name='crear_historias_clinicas')
 ]
