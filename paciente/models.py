@@ -19,6 +19,9 @@ class Paciente(models.Model):
     direccion = models.CharField(max_length=70)
     telefono = models.IntegerField()
 
+    def __str__(self):
+        return str(self.cedula) + "  " + self.first_name + " " + self.last_name
+
 
 class Historiadetriaje(models.Model):
     paciente = models.ForeignKey(Paciente,

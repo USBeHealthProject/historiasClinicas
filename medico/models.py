@@ -19,6 +19,9 @@ class Medico(models.Model):
     usuario = models.ForeignKey(Usuario,
                              on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.cedula) + "  " + self.first_name + " " + self.last_name
+
 
 class Medico_Especialidad(models.Model):
     especialidad = models.ForeignKey(Especialidad,
@@ -76,7 +79,7 @@ class Medico_Publicaciones(models.Model):
     numero = models.CharField(max_length=5, blank=False)
     volumen = models.CharField(max_length=5, blank=False)
     fecha = models.DateField()
-    
+
 
 class Medico_Eventos(models.Model):
     medico = models.ForeignKey(Medico,
