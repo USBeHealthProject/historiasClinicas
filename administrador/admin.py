@@ -1,5 +1,5 @@
 from django.contrib import admin
-from adminisrador.models import *
+from administrador.models import *
 from medico.models import *
 from paciente.models import *
 
@@ -9,6 +9,5 @@ admin.site.register(Medico_Estudios)
 admin.site.register(Medico_Logros)
 admin.site.register(Medico_Publicaciones)
 admin.site.register(Paciente)
-admin.site.register(Medico)
 admin.site.register(Usuario)
 admin.site.register(Historiadetriaje)

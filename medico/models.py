@@ -9,13 +9,13 @@ class Especialidad(models.Model):
 class Medico(models.Model):
     cedula = models.IntegerField(primary_key=True,
                                  validators=[MaxValueValidator(99999999)])
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     fecha_nacimiento = models.DateField(null=True)
-    sexo = models.CharField(max_length=10)
-    estado_civil = models.CharField(max_length=15)
-    telefono = models.CharField(max_length=15)
-    direccion = models.CharField(max_length=100)
+    sexo = models.CharField(max_length=10, blank=True, null=True)
+    estado_civil = models.CharField(max_length=15, blank=True, null=True)
+    telefono = models.CharField(max_length=15, blank=True, null=True)
+    direccion = models.CharField(max_length=100, blank=True, null=True)
     usuario = models.ForeignKey(Usuario,
                                 on_delete=models.CASCADE)
 
