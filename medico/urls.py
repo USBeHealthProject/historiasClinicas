@@ -118,5 +118,15 @@ urlpatterns = [
         r'^historias/new/$',
         HistoriasClinicasCrear.as_view(),
         name='crear_historias_clinicas'
-    )
+    ),
+    url(
+        r'^ver-historia-clinica/(?P<pk>\w+)$',
+        HistoriasClinicasModificar.as_view(),
+        name='ver_historia_clinica'
+    ),
+    url(
+        r'^eliminar-historia_clinica/(?P<id>\w+)$',
+        'medico.controllers.eliminar_historia_clinica',
+        name='eliminar_historia_clinica'
+    ),
 ]

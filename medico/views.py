@@ -504,3 +504,46 @@ class HistoriasClinicasCrear(View):
         else:
             return render_to_response('crear_historia.html', {'form': form},
                                       context_instance=RequestContext(request))
+
+
+class HistoriasClinicasModificar(UpdateView):
+    template_name = 'medico/ver_historia_clinica.html'
+    form_class = HistoriaClinicaForm
+    success_url = reverse_lazy('historias_clinicas')
+
+    def get_queryset(self):
+        return Historiadetriaje.objects.filter(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            HistoriasClinicasModificar, self).get_context_data(**kwargs)
+        historia = Historiadetriaje.objects.get(pk=self.kwargs['pk'])
+        form = HistoriaClinicaForm(
+            initial={'medico_triaje': historia.medico_triaje,
+                     'paciente': historia.paciente,
+                     'antecedentes_personales': historia.antecedentes_personales,
+                     'antecedentes_familiares': historia.antecedentes_familiares,
+                     'motivo_consulta': historia.motivo_consulta,
+                     'enfermedad_actual': historia.enfermedad_actual,
+                     'peso': historia.peso,
+                     'talla': historia.talla,
+                     'signos_vitales': historia.signos_vitales,
+                     'piel': historia.piel,
+                     'ojos': historia.ojos,
+                     'fosas_nasales': historia.fosas_nasales,
+                     'conductos_auditivos': historia.conductos_auditivos,
+                     'cavidad_oral': historia.cavidad_oral,
+                     'cuello': historia.cuello,
+                     'columna': historia.columna,
+                     'torax': historia.torax,
+                     'abdomen': historia.abdomen,
+                     'extremidades': historia.extremidades,
+                     'genitales': historia.genitales
+                     }
+        )
+
+        context['form'] = form
+        context['historia'] = historia
+
+        return context
+

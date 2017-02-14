@@ -2,6 +2,7 @@ from django.db import models
 from administrador.models import *
 from django.core.validators import MaxValueValidator
 
+
 class Especialidad(models.Model):
     nombre_especialidad = models.CharField(primary_key=True, max_length=30)
 

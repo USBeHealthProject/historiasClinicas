@@ -1,5 +1,6 @@
 from administrador.models import *
 from medico.models import *
+from paciente.models import *
 import datetime
 import parsedatetime as pdt
 from django.core.urlresolvers import reverse_lazy
@@ -296,3 +297,10 @@ def eliminar_experiencias(request, id):
     experiencia.delete()
     return HttpResponseRedirect(reverse_lazy(
         'perfil_medico', kwargs={'id': request.user.pk}))
+
+
+def eliminar_historia_clinica(request, id):
+    historia = Historiadetriaje.objects.get(pk=id)
+    historia.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'historias_clinicas'))

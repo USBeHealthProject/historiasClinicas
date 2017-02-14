@@ -16,12 +16,14 @@
          <th>Cedula</th>
          <th>Nombre</th>
          <th>Apellido</th>
+         <th>Eliminar</th>
       </tr>
       {% for historia in historias %}
          <tr>
-            <td>{{historia.paciente.cedula}}</td>
+            <td><a href="{% url 'ver_historia_clinica' historia.pk %}">{{historia.paciente.cedula}}</a></td>
             <td>{{historia.paciente.first_name}}</td>
             <td>{{historia.paciente.last_name}}</td>
+            <td><a href="{% url 'eliminar_historia_clinica' historia.pk %}" style="color: red; font-weight: bolder;">x</a></td>
          </tr>
       {% endfor %}
    </table>
