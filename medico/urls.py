@@ -85,14 +85,14 @@ urlpatterns = [
         name='eliminar_experiencias'
     ),
     url(
-        r'^ver_consultas/(?P<id>\w+)$',
+        r'^ver-consultas/(?P<id>\w+)$',
         VerConsultas.as_view(),
         name='ver_consultas'
     ),
     url(
-        r'^historias_clinicas$',
-        HistoriasClinicas.as_view(),
-        name='historias_clinicas'
+        r'^agregar-consulta/$',
+        AgregarConsulta.as_view(),
+        name='agregar_consulta'
     ),
     url(
         r'^buscar-paciente$',

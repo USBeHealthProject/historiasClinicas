@@ -465,6 +465,10 @@ class VerConsultas(TemplateView):
     template_name = 'medico/ver_consultas.html'
 
 
+class AgregarConsulta(TemplateView):
+    template_name = 'medico/agregar_consulta.html'
+
+
 class BuscarPaciente(TemplateView):
     template_name = 'medico/buscar.html'
 
