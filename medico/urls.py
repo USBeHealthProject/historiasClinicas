@@ -109,4 +109,14 @@ urlpatterns = [
         VerCitas.as_view(),
         name='ver_citas'
     ),
+    url(
+        r'^historias/$',
+        views.HistoriasClinicas.as_view(),
+        name='historias_clinicas'
+    ),
+    url(
+        r'^historias/new/$',
+        views.HistoriasClinicasCrear.as_view(),
+        name='crear_historias_clinicas'
+    )
 ]

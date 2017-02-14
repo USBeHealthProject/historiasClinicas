@@ -2,7 +2,6 @@ from django.db import models
 from administrador.models import *
 from django.core.validators import MaxValueValidator
 
-
 class Especialidad(models.Model):
     nombre_especialidad = models.CharField(primary_key=True, max_length=30)
 
@@ -19,6 +18,9 @@ class Medico(models.Model):
     direccion = models.CharField(max_length=100)
     usuario = models.ForeignKey(Usuario,
                                 on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.cedula) + "  " + self.first_name + " " + self.last_name
 
 
 class Medico_Especialidad(models.Model):
