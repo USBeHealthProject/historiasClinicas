@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1%}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
+{% block content %}
+  <div id="cuerpoHeredado">
+    {% if mensaje %}
+      <p class="error"> <i class="fa fa-exclamation-triangle"></i>  <strong>{{ mensaje }}</strong></p>
+    {% endif %}
+    <h2>Modificar datos de Usuario</h2>
+    <form action="" method=POST>
+
+      {{ form.ci.label }}
+      {{ ci }}
+      {{ form.username.label}}
+      {{ username}}
+      {{ form.password.label}}
+      <input id="password" name="password" type="password" value="{{password}}">
+      {{ form.name.label }}
+      {{ form.name }}
+      {{ form.last_name.label }}
+      {{ form.last_name }}
+      {{ form.email.label }}
+      {{ form.email }}
+      {{ form.role.label }}
+      {{ form.role }}
+      {{ form.submit }}
+    </form>
+  </div>
+{% endblock %}

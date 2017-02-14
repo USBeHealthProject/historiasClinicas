@@ -40,4 +40,14 @@ urlpatterns = patterns(
         Inbox.as_view(),
         name='inbox'
     ),
+    url(
+        r'^ver-usuarios/$',
+        VerUsuarios.as_view(),
+        name='ver_usuarios'
+    ),
+    url(
+        r'^modificar-usuario/(?P<pk>\w+)$',
+        ModificarUsuario.as_view(),
+        name='modificar_usuario'
+    ),
 )

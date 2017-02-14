@@ -110,3 +110,33 @@ class Home(TemplateView):
 
 class Inbox(TemplateView):
     template_name = 'administrador/inbox.html'
+
+
+class VerUsuarios(TemplateView):
+    template_name = 'administrador/ver_usuarios.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            VerUsuarios, self).get_context_data(**kwargs)
+
+        usuarios = Usuario.objects.all()
+        context['usuarios'] = usuarios
+        return context
+
+
+class ModificarUsuario(UpdateView):
+    template_name = 'administrador/modificar_usuario.html'
+    form_class = UsuarioForm
+    success_url = reverse_lazy('ver_usuarios')
+
+    def get_queryset(self):
+        return Usuario.objects.filter(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarUsuario, self).get_context_data(**kwargs)
+        usuario = Usuario.objects.get(pk=self.kwargs['pk'])
+
+        context['usuario'] = usuario
+
+        return context
