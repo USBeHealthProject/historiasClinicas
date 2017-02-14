@@ -468,9 +468,29 @@ class VerConsultas(TemplateView):
 class BuscarPaciente(TemplateView):
     template_name = 'medico/buscar.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(
+            BuscarPaciente, self).get_context_data(**kwargs)
+
+        pacientes = Paciente.objects.all()
+
+        context['result'] = pacientes
+
+        return context
+
 
 class BuscarMedico(TemplateView):
     template_name = 'medico/buscar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            BuscarMedico, self).get_context_data(**kwargs)
+
+        pacientes = Medico.objects.all()
+
+        context['result'] = pacientes
+
+        return context
 
 
 class VerCitas(TemplateView):
