@@ -16,12 +16,38 @@ class MedicoTestCase(TestCase):
         
 
     
-    def test_editar_medico(self):    
+    def test_editar_medico_first_name(self):    
         med = Medico.objects.get(cedula=202020)
-        editar_medico(user=med, nombre=140, apellido=45, fecha="2015-02-15", email="dfd@g.com", sexo="m",
-                      estado_civil="s",telefono="02125555000000000000", direccion="dir")
+        editar_medico(user=med, nombre=140, apellido="r", fecha="2015-02-15", email="d@g.com", sexo="m",
+                      estado_civil="s",telefono="021255550", direccion="dir")
         self.assertNotEqual(med.first_name,140)
-        self.assertNotEqual(med.last_name,45)
+        
+        editar_medico(user=med, nombre="ttttttttttttttttttttttttttttttttttt", apellido="r", 
+                      fecha="2015-02-15", email="d@g.com", sexo="m",
+                      estado_civil="s",telefono="021255550", direccion="dir")
+        self.assertNotEqual(med.first_name,"ttttttttttttttttttttttttttttttttttt")
+        
+    def test_editar_medico_last_name(self):    
+        
+        editar_medico(user=med, nombre="r", apellido=33, fecha="2015-02-15", email="d@g.com", sexo="m",
+                      estado_civil="s",telefono="021255550", direccion="dir")
+        self.assertNotEqual(med.last_name,33)
+        
+        editar_medico(user=med, nombre="r", apellido="ttttttttttttttttttttttttttttttttttt", 
+                      fecha="2015-02-15", email="d@g.com", sexo="m",
+                      estado_civil="s",telefono="021255550", direccion="dir")
+        self.assertNotEqual(med.last_name,"ttttttttttttttttttttttttttttttttttt") 
+        
+    def test_editar_medico_telefono(self):  
+        
+        editar_medico(user=med, nombre="r", apellido="r", fecha="2015-02-15", email="d@g.com", sexo="m",
+                      estado_civil="s",telefono="02125555000000000000", direccion="dir")
         self.assertNotEqual(med.telefono,"02125555000000000000")
-        self.assertEqual(med.estado_civil,"s")
+        
+     
+    def test_editar_medico_estado_civil(self):
+        
+        editar_medico(user=med, nombre="r", apellido="r", fecha="2015-02-15", email="d@g.com", sexo="m",
+                      estado_civil="",telefono="02125555000", direccion="dir")
+        self.assertEqual(med.estado_civil,"")
         
