@@ -184,32 +184,32 @@
                         <p>{{ability.descripcion}}</p>
                     </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <a href=""> Modificar </a>
-                        <a href=""> Eliminar </a>
+                        <a href="{% url 'modificar_habilidades' ability.pk %}"> Modificar </a>
+                        <a href="{% url 'eliminar_habilidades' ability.pk %}"> Eliminar </a>
                     </div>
                 </div>
                 <hr>
             {% endfor%}
-            <center><a href=""> Agregar Habilidad </a></center>
+            <center><a href="{% url 'agregar_habilidades' user.pk %}"> Agregar Habilidad </a></center>
 
         </div>
          <div id="menu6" class="tab-pane fade">
           <center><h3>Eventos</h3></center>
           <br>
             {% for event in events %}
-                <h4>{{event.title}} <i>{{event.institution}} {{event.date}}</i></h4>
+                <h4>{{event.titulo}} <i>{{event.institucion}} {{event.date}}</i></h4>
                 <div class="row">
                     <div class="col-md-8 ">
-                        <p>{{event.description}}</p>
+                        <p>{{event.descripcion}}</p>
                     </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <a href="">  Modificar </a>
-                        <a href=""> Eliminar </a>
+                        <a href="{% url 'modificar_eventos' event.pk %}">  Modificar </a>
+                        <a href="{% url 'eliminar_eventos' event.pk %}"> Eliminar </a>
                     </div>
                 </div>
                 <hr>
             {% endfor%}
-            <center><a href=""> Agregar Evento </a></center>
+            <center><a href="{% url 'agregar_eventos' user.pk %}"> Agregar Evento </a></center>
 
         </div>
       </div>

@@ -299,6 +299,98 @@ def eliminar_experiencias(request, id):
         'perfil_medico', kwargs={'id': request.user.pk}))
 
 
+def agregar_habilidades(user_pk, titulo, descripcion):
+    try:
+        user = User.objects.get(pk=user_pk)
+        usuario = Usuario.objects.get(user=user)
+        medico = Medico.objects.get(usuario=usuario)
+
+        habilidades = Medico_Habilidades(medico=medico, titulo=titulo,
+                                          descripcion=descripcion)
+        habilidades.save()
+        return True
+    except:
+        return False
+
+
+def modificar_habilidades(habilidad_id, titulo, descripcion):
+    try:
+        habilidad = Medico_Habilidades.objects.get(
+            pk=habilidad_id)
+
+        habilidad.titulo = titulo
+        habilidad.descripcion = descripcion
+        habilidad.save()
+        return True
+    except:
+        return False
+
+
+def eliminar_habilidades(request, id):
+    habilidad = Medico_Habilidades.objects.get(pk=id)
+    habilidad.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'perfil_medico', kwargs={'id': request.user.pk}))
+
+
+def agregar_eventos(user_pk, titulo, descripcion, institucion, fecha):
+    try:
+        user = User.objects.get(pk=user_pk)
+        usuario = Usuario.objects.get(user=user)
+        medico = Medico.objects.get(usuario=usuario)
+        try:
+            fecha = datetime.datetime.strptime(fecha,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha is None:
+                fecha = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha = cal.parseDT(fecha, now)[0]
+        evento = Medico_Eventos(medico=medico, titulo=titulo,
+                                descripcion=descripcion,
+                                institucion=institucion,
+                                date=fecha)
+        evento.save()
+        return True
+    except:
+        return False
+
+
+def modificar_eventos(evento_id, titulo, descripcion, institucion, fecha):
+    try:
+        evento = Medico_Eventos.objects.get(
+            pk=evento_id)
+        try:
+            fecha = datetime.datetime.strptime(fecha,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha is None:
+                fecha = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha = cal.parseDT(fecha, now)[0]
+        evento.titulo = titulo
+        evento.descripcion = descripcion
+        evento.institucion = institucion
+        evento.date = fecha
+        evento.save()
+        return True
+    except:
+        return False
+
+
+def eliminar_eventos(request, id):
+    evento = Medico_Eventos.objects.get(pk=id)
+    evento.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'perfil_medico', kwargs={'id': request.user.pk}))
+
+
 def eliminar_historia_clinica(request, id):
     historia = Historiadetriaje.objects.get(pk=id)
     historia.delete()

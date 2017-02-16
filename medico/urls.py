@@ -85,6 +85,36 @@ urlpatterns = [
         name='eliminar_experiencias'
     ),
     url(
+        r'^agregar-habilidades/(?P<id>\w+)$',
+        AgregarHabilidades.as_view(),
+        name='agregar_habilidades'
+    ),
+    url(
+        r'^modificar-habilidades/(?P<id>\w+)$',
+        ModificarHabilidades.as_view(),
+        name='modificar_habilidades'
+    ),
+    url(
+        r'^eliminar-habilidades/(?P<id>\w+)$',
+        'medico.controllers.eliminar_habilidades',
+        name='eliminar_habilidades'
+    ),
+    url(
+        r'^agregar-eventos/(?P<id>\w+)$',
+        AgregarEventos.as_view(),
+        name='agregar_eventos'
+    ),
+    url(
+        r'^modificar-eventos/(?P<id>\w+)$',
+        ModificarEventos.as_view(),
+        name='modificar_eventos'
+    ),
+    url(
+        r'^eliminar-eventos/(?P<id>\w+)$',
+        'medico.controllers.eliminar_eventos',
+        name='eliminar_eventos'
+    ),
+    url(
         r'^ver-consultas/(?P<id>\w+)$',
         VerConsultas.as_view(),
         name='ver_consultas'

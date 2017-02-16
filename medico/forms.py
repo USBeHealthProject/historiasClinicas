@@ -36,6 +36,20 @@ class Medico_ExperienciasForm(forms.ModelForm):
         exclude = ("medico",)
 
 
+class Medico_HabilidadesForm(forms.ModelForm):
+
+    class Meta:
+        model = Medico_Habilidades
+        exclude = ("medico",)
+
+
+class Medico_EventosForm(forms.ModelForm):
+
+    class Meta:
+        model = Medico_Eventos
+        exclude = ("medico",)
+
+
 class HistoriaClinicaForm(forms.ModelForm):
     class Meta:
         model = Historiadetriaje
