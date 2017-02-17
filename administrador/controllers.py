@@ -53,3 +53,11 @@ def eliminar_usuario(request, id):
     user.delete()
     return HttpResponseRedirect(reverse_lazy(
         'historias_clinicas'))
+
+
+def agregar_rol(request, name):
+    group = Group(name=name)
+    group.save()
+    data = {'role': name}
+    return HttpResponse(json.dumps(data), status=200,
+                        content_type='application/json')

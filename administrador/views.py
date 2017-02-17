@@ -178,3 +178,15 @@ class ModificarUsuario(CreateView):
                                       {'form': form,
                                        'title': 'Modificar'},
                                       context_instance=RequestContext(request))
+
+
+class VerRoles(TemplateView):
+    template_name = 'administrador/ver_roles.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            VerRoles, self).get_context_data(**kwargs)
+
+        roles = Group.objects.all()
+        context['roles'] = roles
+        return context
