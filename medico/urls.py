@@ -145,6 +145,16 @@ urlpatterns = [
         name='agregar_cita'
     ),
     url(
+        r'^modificar-cita/(?P<id>\w+)$',
+        ModificarCitas.as_view(),
+        name='modificar_cita'
+    ),
+    url(
+        r'^eliminar-cita/(?P<id>\w+)$',
+        'medico.controllers.eliminar_citas',
+        name='eliminar_cita'
+    ),
+    url(
         r'^historias/$',
         HistoriasClinicas.as_view(),
         name='historias_clinicas'

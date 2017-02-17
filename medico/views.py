@@ -681,8 +681,9 @@ class VerCitas(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(
             VerCitas, self).get_context_data(**kwargs)
-
-        citas = Medico_Citas.objects.all()
+        user = user = User.objects.get(pk=self.kwargs['id'])
+        citas = Medico_Citas.objects.filter(
+            medico__usuario__user=user)
 
         context['appointments'] = citas
 
@@ -727,6 +728,53 @@ class AgregarCitas(CreateView):
             return render_to_response('medico/agregar_cita.html',
                                       {'form': form,
                                        'title': 'Agregar'},
+                                      context_instance=RequestContext(request))
+
+
+class ModificarCitas(CreateView):
+    template_name = 'medico/agregar_cita.html'
+    form_class = Medico_CitasForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarCitas, self).get_context_data(**kwargs)
+
+        context['title'] = 'Modificar'
+        cita = Medico_Citas.objects.get(pk=self.kwargs['id'])
+        data = {'paciente': cita.paciente,
+                'descripcion': cita.descripcion,
+                'fecha': cita.fecha
+                }
+        form = Medico_CitasForm(initial=data)
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_CitasForm(request.POST)
+        if form.is_valid():
+            cita_id = kwargs['id']
+            paciente = request.POST['paciente']
+            descripcion = request.POST['descripcion']
+            fecha = request.POST['fecha']
+            value = modificar_citas(cita_id, paciente, descripcion,
+                                    fecha)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'ver_citas', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_cita.html',
+                                          {'form': form,
+                                           'title': 'Modificar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_cita.html',
+                                      {'form': form,
+                                       'title': 'Modificar'},
                                       context_instance=RequestContext(request))
 
 

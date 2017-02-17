@@ -418,6 +418,38 @@ def agregar_citas(user_pk, paciente, descripcion, fecha):
         return False
 
 
+def modificar_citas(cita_id, paciente, descripcion, fecha):
+    try:
+        cita = Medico_Citas.objects.get(
+            pk=cita_id)
+        try:
+            fecha = datetime.datetime.strptime(fecha,
+                                               '%d-%m-%Y'
+                                               ).strftime('%Y-%m-%d')
+        except:
+            if fecha is None:
+                fecha = None
+            else:
+                cal = pdt.Calendar()
+                now = datetime.datetime.now()
+                fecha = cal.parseDT(fecha, now)[0]
+        paciente = Paciente.objects.get(cedula=paciente)
+        cita.paciente = paciente
+        cita.descripcion = descripcion
+        cita.fecha = fecha
+        cita.save()
+        return True
+    except:
+        return False
+
+
+def eliminar_citas(request, id):
+    cita = Medico_Citas.objects.get(pk=id)
+    cita.delete()
+    return HttpResponseRedirect(reverse_lazy(
+                    'ver_citas', kwargs={'id': request.user.pk}))
+
+
 def eliminar_historia_clinica(request, id):
     historia = Historiadetriaje.objects.get(pk=id)
     historia.delete()

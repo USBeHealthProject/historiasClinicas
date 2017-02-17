@@ -42,8 +42,8 @@
         {% endif %}
         <td>{{a.descripcion}}</td>
         <td style="text-align: right">
-          <a href=""><i class="fa fa-pencil" style="font-size:16px;color:black"></i></a>
-          <button id="deleteButton_appointment"  onclick="openModal({{a.id}})"><i class="fa fa-trash" style="font-size:16px;color:black"></i></button>
+          <a href="{% url 'modificar_cita' a.pk %}"><i class="fa fa-pencil" style="font-size:16px;color:black"></i></a>
+          <a href="{% url 'eliminar_cita' a.pk %}"><i class="fa fa-trash" style="font-size:16px;color:black"></i></a>
         </td>
       </tr>
     {% endfor%}
