@@ -140,6 +140,11 @@ urlpatterns = [
         name='ver_citas'
     ),
     url(
+        r'^agregar-cita/(?P<id>\w+)$',
+        AgregarCitas.as_view(),
+        name='agregar_cita'
+    ),
+    url(
         r'^historias/$',
         HistoriasClinicas.as_view(),
         name='historias_clinicas'

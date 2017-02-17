@@ -678,6 +678,57 @@ class BuscarMedico(TemplateView):
 class VerCitas(TemplateView):
     template_name = 'medico/ver_citas.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(
+            VerCitas, self).get_context_data(**kwargs)
+
+        citas = Medico_Citas.objects.all()
+
+        context['appointments'] = citas
+
+        return context
+
+
+class AgregarCitas(CreateView):
+    template_name = 'medico/agregar_cita.html'
+    form_class = Medico_CitasForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            AgregarCitas, self).get_context_data(**kwargs)
+
+        context['title'] = 'Agregar'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = Medico_CitasForm(request.POST)
+        if form.is_valid():
+            user_pk = request.user.pk
+            paciente = request.POST['paciente']
+            fecha = request.POST['fecha']
+            descripcion = request.POST['descripcion']
+            value = agregar_citas(user_pk, paciente, descripcion,
+                                  fecha)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'ver_citas', kwargs={'id': request.user.pk}))
+            else:
+                return render_to_response('medico/agregar_cita.html',
+                                          {'form': form,
+                                           'title': 'Agregar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('medico/agregar_cita.html',
+                                      {'form': form,
+                                       'title': 'Agregar'},
+                                      context_instance=RequestContext(request))
+
 
 class HistoriasClinicas(ListView):
     template_name = 'medico/historias_clinicas.html'

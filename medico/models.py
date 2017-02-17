@@ -1,5 +1,6 @@
 from django.db import models
 from administrador.models import *
+from paciente.models import *
 from django.core.validators import MaxValueValidator
 
 
@@ -89,3 +90,12 @@ class Medico_Eventos(models.Model):
     descripcion = models.CharField(max_length=500, blank=False)
     institucion = models.CharField(max_length=500, blank=False)
     date = models.DateField()
+
+
+class Medico_Citas(models.Model):
+    paciente = models.ForeignKey(Paciente,
+                                 on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico,
+                               on_delete=models.CASCADE)
+    fecha = models.DateField()
+    descripcion = models.CharField(max_length=500, blank=False)
