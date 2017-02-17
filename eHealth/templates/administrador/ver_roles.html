@@ -18,7 +18,7 @@
       <br>
       <span>Agregar nuevo rol: </span>
       <input id="add-role-input" name="role" type="role">
-      <button id = "add-role">Aceptar</button>
+      <button type="button" id="add-role">Aceptar</button>
      <br>
      <br>
     </div>
@@ -66,4 +66,31 @@
   </table>
   </div>
 </div>
+{% endblock %}
+{% block custom_script %}
+<script type="text/javascript">
+  $("#add-role").on('click', function(){
+    var rol = $('#add-role-input').val();
+    console.log(rol);
+    url = "{% url 'agregar_rol' 0 %}".replace('0', rol);
+    $.ajax({
+            type: 'GET',
+            url: url,
+            data: JSON.stringify(rol),
+            contentType:'application/json; charset=utf-8',
+
+            success: function(response) {
+                console.log(response);
+                console.log("BIEN");
+                //window.location.reload(true);
+                hide_add_role();
+                $('#show-roles').load(document.URL +  ' #show-roles');
+            },
+            error: function(error) {
+                console.log(error);
+                console.log("MAL");
+            }
+        });
+  });
+</script>
 {% endblock %}

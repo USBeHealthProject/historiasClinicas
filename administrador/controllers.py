@@ -2,7 +2,8 @@ from administrador.models import *
 from paciente.models import *
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+import json
 
 
 def register_user(form):
@@ -56,8 +57,18 @@ def eliminar_usuario(request, id):
 
 
 def agregar_rol(request, name):
+    print request.GET
     group = Group(name=name)
     group.save()
     data = {'role': name}
+    return HttpResponse(json.dumps(data), status=200,
+                        content_type='application/json')
+
+
+def eliminar_rol(request, id):
+    group = Group.objects.get(pk=id)
+    group.delete()
+    idd = id
+    data = {'status': "BIEN"}
     return HttpResponse(json.dumps(data), status=200,
                         content_type='application/json')

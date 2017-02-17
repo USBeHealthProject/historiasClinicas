@@ -44,27 +44,6 @@ function hide_modify_role(){
     $('.show-modify-role').hide();
 }
 
-$("#add-role").click(function(){
-  var rol = $('#add-role-input').val();
-  console.log(rol);
-  $.ajax({
-          type: 'POST',
-          url: "{% url 'agregar_rol' agregar_rol %}",
-          data: JSON.stringify(rol),
-          contentType:'application/json; charset=utf-8',
-
-          success: function(response) {
-              console.log(response);
-              //window.location.reload(true);
-              hide_add_role();
-              $('#show-roles').load(document.URL +  ' #show-roles');
-          },
-          error: function(error) {
-              console.log(error);
-          }
-      });
-});
-
 $("#modify-role-form").click(function(){
   var id = $('#modify-role-form').val();
   var name = $('#modify-role-input').val();
@@ -118,15 +97,15 @@ function handleData(response){
 
 function delete_role_ajax(id){
       $.ajax({
-            type: 'POST',
-            url: '/delete_role',
+            type: 'GET',
+            url: '/eliminar_rol/' + id,
             data: JSON.stringify(id),
             //async: false,
             contentType:'application/json; charset=utf-8',
 
             success: function(response) {
               console.log(response);
-              var d = $.parseJSON(response);
+              var d = response;
               //console.log(d);
               var status = d.status;
               //console.log(status);
