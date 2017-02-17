@@ -129,4 +129,20 @@ urlpatterns = [
         'medico.controllers.eliminar_historia_clinica',
         name='eliminar_historia_clinica'
     ),
+    url(
+        r'^historias_especialidad$',
+        HistoriasEspecialidad.as_view(),
+        name='historias_especialidad'
+    ),     
+    url(
+        r'^historias_especialidad/new/$',
+        HistoriasEspecialidadCrear.as_view(),
+        name='crear_historias_especialidad'
+    ),
+    url(
+        r'^ver-historia-especialidad/(?P<pk>\w+)$',
+        HistoriasEspecialidadModificar.as_view(),
+        name='ver_historia_especialidad'
+    ),
+    
 ]

@@ -5,7 +5,7 @@ from medico.models import *
 from django.contrib.auth.models import User, Group
 from administrador.models import Usuario
 from medico.models import Medico
-from paciente.models import Historiadetriaje, Paciente
+from paciente.models import Historiadetriaje, Paciente, Historia
 
 
 class Medico_EstudiosForm(forms.ModelForm):
@@ -53,3 +53,20 @@ class HistoriaClinicaForm(forms.ModelForm):
         super(HistoriaClinicaForm, self).__init__(*args, **kwargs)
         self.fields['paciente'].queryset = Paciente.objects.all()
         # self.fields['medico'].queryset = Paciente.objects.all()
+        
+class HistoriaEspecialidadForm(forms.ModelForm):
+    class Meta:
+        model = Historia
+        fields = ["paciente", "medico", "especialidad"]
+
+        # widgets = {
+        #     'antecedentes_personales': forms.Textarea(),
+        #     'antecedentes_familiares': forms.Textarea()
+        # }
+
+    def __init__(self, *args, **kwargs):
+        super(HistoriaEspecialidadForm, self).__init__(*args, **kwargs)
+        self.fields['paciente'].queryset = Paciente.objects.all()
+        # self.fields['medico'].queryset = Paciente.objects.all()
+        self.fields['especialidad'].queryset = Especialidad.objects.all()
+

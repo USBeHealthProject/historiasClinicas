@@ -484,6 +484,32 @@ class HistoriasClinicas(ListView):
     def get_queryset(self):
         return Historiadetriaje.objects.filter(medico_triaje__usuario__user=self.request.user)
 
+class HistoriasEspecialidad(ListView):
+    template_name = 'medico/historias_especialidad.html'
+    context_object_name = 'historiasespecialidad'
+
+    def get_queryset(self):
+        return Historia.objects.filter(medico__usuario__user=self.request.user)
+
+class HistoriasEspecialidadCrear(View):
+    template_name = 'medico/crear_historiaespecialidad.html'
+
+    def get(self, request, *args, **kwargs):
+        form = HistoriaEspecialidadForm(initial={'medico': Medico.objects.get(usuario__user=request.user)})
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = HistoriaEspecialidadForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('historias_especialidad'))
+        else:
+            return render_to_response('crear_historiaespecialidad.html', {'form': form},
+                                      context_instance=RequestContext(request))
 
 class HistoriasClinicasCrear(View):
     template_name = 'medico/crear_historia.html'
@@ -504,8 +530,7 @@ class HistoriasClinicasCrear(View):
         else:
             return render_to_response('crear_historia.html', {'form': form},
                                       context_instance=RequestContext(request))
-
-
+            
 class HistoriasClinicasModificar(UpdateView):
     template_name = 'medico/ver_historia_clinica.html'
     form_class = HistoriaClinicaForm
@@ -546,4 +571,29 @@ class HistoriasClinicasModificar(UpdateView):
         context['historia'] = historia
 
         return context
+
+class HistoriasEspecialidadModificar(UpdateView):
+    template_name = 'medico/ver_historia_especialidad.html'
+    form_class = HistoriaEspecialidadForm
+    success_url = reverse_lazy('historias_especialidad')
+
+    def get_queryset(self):
+        return Historia.objects.filter(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            HistoriasEspecialidadModificar, self).get_context_data(**kwargs)
+        historia = Historia.objects.get(pk=self.kwargs['pk'])
+        form = HistoriaEspecialidadForm(
+            initial={'medico_triaje': historia.medico,
+                     'paciente': historia.paciente,
+                     'especialidad': historia.especialidad
+                     }
+        )
+
+        context['form'] = form
+        context['historia'] = historia
+
+        return context
+
 
