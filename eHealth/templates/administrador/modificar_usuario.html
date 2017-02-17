@@ -16,22 +16,32 @@
     {% endif %}
     <h2>Modificar datos de Usuario</h2>
     <form action="" method=POST>
-
-      {{ form.ci.label }}
-      {{ ci }}
-      {{ form.username.label}}
-      {{ username}}
-      {{ form.password.label}}
-      <input id="password" name="password" type="password" value="{{password}}">
-      {{ form.name.label }}
-      {{ form.name }}
-      {{ form.last_name.label }}
-      {{ form.last_name }}
-      {{ form.email.label }}
-      {{ form.email }}
-      {{ form.role.label }}
-      {{ form.role }}
-      {{ form.submit }}
+      {% csrf_token %}
+      <div class="hidden">
+          {% bootstrap_form_errors form %}
+      </div>
+      <label for="id_username">Nombre de usuario</label>
+      {% bootstrap_field form.username layout="inline" %}
+      <label for="id_first_name">Nombre</label>
+      {% bootstrap_field form.first_name layout="inline" %}
+      <label for="id_last_name">Apellido</label>
+      {% bootstrap_field form.last_name layout="inline" %}
+      <label for="id_email">Correo</label>
+      {% bootstrap_field form.email layout="inline" %}
+      <label for="id_rol">Rol</label>
+      {% bootstrap_field form.rol layout="inline" %}
+      {% buttons %}
+        <div class="col-md-3"></div>
+        <div class="col-sm-4 col-md-6 text-center">
+            <br>
+            <button id="id_submit" type="submit" class="btn btn-lg calculate">
+                Guardar
+            </button>
+            <br>
+            <br>
+        </div>
+        <div class="col-md-3"></div>
+    {% endbuttons %}
     </form>
   </div>
 {% endblock %}

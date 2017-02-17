@@ -124,19 +124,57 @@ class VerUsuarios(TemplateView):
         return context
 
 
-class ModificarUsuario(UpdateView):
+class ModificarUsuario(CreateView):
     template_name = 'administrador/modificar_usuario.html'
-    form_class = UsuarioForm
-    success_url = reverse_lazy('ver_usuarios')
-
-    def get_queryset(self):
-        return Usuario.objects.filter(pk=self.kwargs['pk'])
+    form_class = ModificarUsuarioForm
 
     def get_context_data(self, **kwargs):
         context = super(
             ModificarUsuario, self).get_context_data(**kwargs)
         usuario = Usuario.objects.get(pk=self.kwargs['pk'])
+        form = UsuarioForm(
+                    initial={'username': usuario.user.username,
+                             'first_name': usuario.user.first_name,
+                             'last_name': usuario.user.last_name,
+                             'email': usuario.user.email,
+                             'rol': usuario.user.groups.all()[0],
+                             }
+                )
 
+        context['form'] = form
         context['usuario'] = usuario
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = ModificarUsuarioForm(request.POST)
+        form.fields['passw'].required = False
+        form.fields['ci'].required = False
+        if form.is_valid():
+            usuario_id = kwargs['pk']
+            username = request.POST['username']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            email = request.POST['email']
+            rol = request.POST['rol']
+            value = modificar_usuario(usuario_id, username,
+                                      first_name, last_name,
+                                      email, rol)
+            if value is True:
+                return HttpResponseRedirect(reverse_lazy(
+                    'ver_usuarios'))
+            else:
+                return render_to_response('administrador/modificar_usuario.html',
+                                          {'form': form,
+                                           'title': 'Modificar'},
+                                          context_instance=RequestContext(
+                                              request))
+        else:
+            return render_to_response('administrador/modificar_usuario.html',
+                                      {'form': form,
+                                       'title': 'Modificar'},
+                                      context_instance=RequestContext(request))

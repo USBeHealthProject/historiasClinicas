@@ -50,4 +50,9 @@ urlpatterns = patterns(
         ModificarUsuario.as_view(),
         name='modificar_usuario'
     ),
+    url(
+        r'^eliminar-usuario/(?P<id>\w+)$',
+        'administrador.controllers.eliminar_usuario',
+        name='eliminar_usuario'
+    ),
 )

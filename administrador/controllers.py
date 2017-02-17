@@ -1,6 +1,8 @@
 from administrador.models import *
 from paciente.models import *
 from django.contrib.auth.models import User, Group
+from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect
 
 
 def register_user(form):
@@ -23,3 +25,31 @@ def register_user(form):
                         last_name=user.last_name)
         medico.save()
     return user
+
+
+def modificar_usuario(usuario_id, username, first_name,
+                      last_name, email, rol):
+    try:
+        usuario = Usuario.objects.get(pk=usuario_id)
+        user = User.objects.get(pk=usuario.user.pk)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.save()
+        group = Group.objects.get(name=rol)
+        user.groups.remove(usuario.user.groups.all()[0])
+        user.groups.add(group)
+        usuario.save()
+        user.save()
+        return True
+    except:
+        return False
+
+
+def eliminar_usuario(request, id):
+    usuario = Usuario.objects.get(pk=id)
+    user = User.objects.get(pk=usuario.user.pk)
+    usuario.delete()
+    user.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'historias_clinicas'))
