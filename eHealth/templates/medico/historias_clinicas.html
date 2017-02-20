@@ -2,31 +2,62 @@
 {% load static %}
 {% block content %}
 
-<div id="cuerpoHeredado">
-   <div class="row">
+
+<!--
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <div id="imaginary_container">
+                <div class="input-group stylish-input-group">
+                    <input type="text" class="form-control"  placeholder="Search" id="search">
+                    <span class="input-group-addon">
+                        <button type="submit" id="search-button">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div class="row">
       <div class="col-md-9">
          <h3>Historias Clinicas</h3>
       </div>
       <div class="col-md-3">
          <a class="btn btn-default" href="{% url 'crear_historias_clinicas' %}">Nueva Historia</a>
       </div>
-   </div>
-   <table class="table">
-      <tr>
-         <th>Cedula</th>
-         <th>Nombre</th>
-         <th>Apellido</th>
-         <th>Eliminar</th>
-      </tr>
-      {% for historia in historias %}
-         <tr>
-            <td><a href="{% url 'ver_historia_clinica' historia.pk %}">{{historia.paciente.cedula}}</a></td>
-            <td>{{historia.paciente.first_name}}</td>
-            <td>{{historia.paciente.last_name}}</td>
-            <td><a href="{% url 'eliminar_historia_clinica' historia.pk %}" style="color: red; font-weight: bolder;">x</a></td>
-         </tr>
-      {% endfor %}
-   </table>
 </div>
+<br>
+<br>
+{% if user.groups.all.0.name == "medico" %}
+<h3> Resultados de búsqueda de historias de triaje </h3>
+<div>
+    <table id="search_result" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for historia in result %}
+                <tr>
+                    <td><a href="{% url 'ver_historia_clinica' historia.pk %}">{{historia.paciente.cedula}}</a></td>
+            		<td>{{historia.paciente.first_name}}</td>
+           			<td>{{historia.paciente.last_name}}</td>
+            		<td><a href="{% url 'eliminar_historia_clinica' historia.pk %}" style="color: red; font-weight: bolder;">x</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <br>
+    <br>
+
+
 
 {% endblock %}

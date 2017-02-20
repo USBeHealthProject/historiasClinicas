@@ -472,7 +472,24 @@ class BuscarPaciente(TemplateView):
 class BuscarMedico(TemplateView):
     template_name = 'medico/buscar.html'
 
+class BuscarHistoriadetriaje(TemplateView):
+    template_name = 'medico/historias_clinicas.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(BuscarHistoriadetriaje, self).get_context_data(**kwargs)
+        Historiasdetriaje = Historiadetriaje.objects.all()
+        context['result'] = Historiasdetriaje
+        return context
 
+class BuscarHistoria(TemplateView):
+    template_name = 'medico/historias_especialidad.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(BuscarHistoria, self).get_context_data(**kwargs)
+        Historias = Historia.objects.all()
+        context['result'] = Historias
+        return context
+    
 class VerCitas(TemplateView):
     template_name = 'medico/ver_citas.html'
 
@@ -508,7 +525,7 @@ class HistoriasEspecialidadCrear(View):
             form.save()
             return HttpResponseRedirect(reverse_lazy('historias_especialidad'))
         else:
-            return render_to_response('crear_historiaespecialidad.html', {'form': form},
+            return render_to_response('medico/crear_historiaespecialidad.html', {'form': form},
                                       context_instance=RequestContext(request))
 
 class HistoriasClinicasCrear(View):
@@ -528,7 +545,7 @@ class HistoriasClinicasCrear(View):
             form.save()
             return HttpResponseRedirect(reverse_lazy('historias_clinicas'))
         else:
-            return render_to_response('crear_historia.html', {'form': form},
+            return render_to_response('medico/crear_historia.html', {'form': form},
                                       context_instance=RequestContext(request))
             
 class HistoriasClinicasModificar(UpdateView):
