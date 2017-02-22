@@ -66,6 +66,11 @@ urlpatterns = patterns(
         name='agregar_rol'
     ),
     url(
+        r'^modificar-rol/(?P<name>\w+)/(?P<id>\w+)$',
+        'administrador.controllers.modificar_rol',
+        name='modificar_rol'
+    ),
+    url(
         r'^eliminar_rol/(?P<id>\w+)$',
         'administrador.controllers.eliminar_rol',
         name='eliminar_rol'

@@ -65,10 +65,19 @@ def agregar_rol(request, name):
                         content_type='application/json')
 
 
+def modificar_rol(request, name, id):
+    print name
+    group = Group(pk=id)
+    group.name = name
+    group.save()
+    data = {'role': name}
+    return HttpResponse(json.dumps(data), status=200,
+                        content_type='application/json')
+
+
 def eliminar_rol(request, id):
     group = Group.objects.get(pk=id)
     group.delete()
-    idd = id
     data = {'status': "BIEN"}
     return HttpResponse(json.dumps(data), status=200,
                         content_type='application/json')

@@ -119,15 +119,11 @@ urlpatterns = [
         VerConsultas.as_view(),
         name='ver_consultas'
     ),
-<<<<<<< HEAD
     url(
         r'^agregar-consulta/$',
         AgregarConsulta.as_view(),
         name='agregar_consulta'
     ),
-=======
-    
->>>>>>> historiasClinicas/master
     url(
         r'^buscar-paciente$',
         BuscarPaciente.as_view(),
@@ -142,13 +138,12 @@ urlpatterns = [
         r'^medico/historias/$',
         BuscarHistoriadetriaje.as_view(),
         name='historias_clinicas'
-    ),           
+    ),
     url(
         r'^ver-citas/(?P<id>\w+)$',
         VerCitas.as_view(),
         name='ver_citas'
     ),
-<<<<<<< HEAD
     url(
         r'^agregar-cita/(?P<id>\w+)$',
         AgregarCitas.as_view(),
@@ -169,9 +164,6 @@ urlpatterns = [
         HistoriasClinicas.as_view(),
         name='historias_clinicas'
     ),
-=======
-    
->>>>>>> historiasClinicas/master
     url(
         r'^historias/new/$',
         HistoriasClinicasCrear.as_view(),
@@ -191,7 +183,7 @@ urlpatterns = [
         r'^historias_especialidad$',
         HistoriasEspecialidad.as_view(),
         name='historias_especialidad'
-    ),     
+    ),
     url(
         r'^historias_especialidad/new/$',
         HistoriasEspecialidadCrear.as_view(),
@@ -206,6 +198,6 @@ urlpatterns = [
         r'^eliminar-historia_especialidad/(?P<id>\w+)$',
         'medico.controllers.eliminar_historia_especialidad',
         name='eliminar_historia_especialidad'
-    ),           
-    
+    ),
+
 ]

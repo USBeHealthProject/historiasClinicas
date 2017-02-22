@@ -44,27 +44,7 @@ function hide_modify_role(){
     $('.show-modify-role').hide();
 }
 
-$("#modify-role-form").click(function(){
-  var id = $('#modify-role-form').val();
-  var name = $('#modify-role-input').val();
-  console.log(id,name)
-  $.ajax({
-          type: 'POST',
-          url: '/modify_role',
-          data: JSON.stringify({id:id,name:name}),
-          contentType:'application/json; charset=utf-8',
 
-          success: function(response) {
-              console.log(response);
-              //window.location.reload(true);
-              hide_modify_role();
-              $('#show-roles').load(document.URL +  ' #show-roles');
-          },
-          error: function(error) {
-              console.log(error);
-          }
-      });
-});
 
 function delete_role(id){
   hide_add_role();
