@@ -829,9 +829,9 @@ class HistoriasClinicasCrear(View):
             form.save()
             return HttpResponseRedirect(reverse_lazy('historias_clinicas'))
         else:
-            return render_to_response('crear_historia.html', {'form': form},
+            return render_to_response('medico/crear_historia.html', {'form': form},
                                       context_instance=RequestContext(request))
-            
+
 class HistoriasClinicasModificar(UpdateView):
     template_name = 'medico/ver_historia_clinica.html'
     form_class = HistoriaClinicaForm
