@@ -455,3 +455,9 @@ def eliminar_historia_clinica(request, id):
     historia.delete()
     return HttpResponseRedirect(reverse_lazy(
         'historias_clinicas'))
+
+def eliminar_historia_especialidad(request, id):
+    historia = Historia.objects.get(pk=id)
+    historia.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'historias_especialidad'))
