@@ -1,5 +1,6 @@
 from administrador.models import *
 from paciente.models import *
+from medico.models import *
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
@@ -81,3 +82,10 @@ def eliminar_rol(request, id):
     data = {'status': "BIEN"}
     return HttpResponse(json.dumps(data), status=200,
                         content_type='application/json')
+
+
+def eliminar_institucion(request, name):
+    institucion = Institucion.objects.get(pk=name)
+    institucion.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'ver_instituciones'))

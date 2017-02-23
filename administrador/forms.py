@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from administrador.models import *
+from medico.models import *
 
 
 class UsuarioForm(forms.ModelForm):
@@ -131,3 +132,10 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={'placeholder': 'Clave'}), required=True, label='')
+
+
+class InstitucionForm(forms.ModelForm):
+
+    class Meta:
+        model = Institucion
+        fields = '__all__'

@@ -99,7 +99,7 @@
               {% else %}
                 <li><a href="{% url 'ver_usuarios' %}"><i class="fa fa-user"></i>  Gestionar Usuarios</a></li>
                 <li><a href="{% url 'ver_roles' %}"><i class="fa fa-users"></i>  Gestionar Roles</a></li>
-                <li><a href=""><i class="fa fa-stethoscope"></i>  Gestionar Instituciones</a></li>
+                <li><a href="{% url 'ver_instituciones' %}"><i class="fa fa-stethoscope"></i>  Gestionar Instituciones</a></li>
                 <li><a href=""><i class="fa fa-h-square"></i>  Gestionar Especializaciones</a></li>
               {% endif %}
           </ul>

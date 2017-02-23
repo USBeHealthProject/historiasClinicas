@@ -75,4 +75,24 @@ urlpatterns = patterns(
         'administrador.controllers.eliminar_rol',
         name='eliminar_rol'
     ),
+    url(
+        r'^ver-instituciones/$',
+        VerInstituciones.as_view(),
+        name='ver_instituciones'
+    ),
+    url(
+        r'^agregar-institucion/$',
+        AgregarInstitucion.as_view(),
+        name='agregar_institucion'
+    ),
+    url(
+        r'^modificar-institucion/(?P<pk>[\w ]+)$',
+        ModificarInstitucion.as_view(),
+        name='modificar_institucion'
+    ),
+    url(
+        r'^eliminar-institucion/(?P<name>[\w ]+)$',
+        'administrador.controllers.eliminar_institucion',
+        name='eliminar_institucion'
+    ),
 )

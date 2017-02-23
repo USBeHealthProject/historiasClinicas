@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -9,6 +9,7 @@ from django.views.generic import *
 from administrador.forms import *
 from administrador.models import *
 from administrador.controllers import *
+from medico.models import *
 
 
 class Index(TemplateView):
@@ -189,4 +190,64 @@ class VerRoles(TemplateView):
 
         roles = Group.objects.all()
         context['roles'] = roles
+        return context
+
+
+class VerInstituciones(TemplateView):
+    template_name = 'administrador/ver_instituciones.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            VerInstituciones, self).get_context_data(**kwargs)
+
+        instituciones = Institucion.objects.all()
+        context['instituciones'] = instituciones
+        return context
+
+
+class AgregarInstitucion(CreateView):
+    template_name = 'administrador/crear_institucion.html'
+    form_class = InstitucionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            AgregarInstitucion, self).get_context_data(**kwargs)
+
+        context['title'] = 'Agregar'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = InstitucionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('ver_instituciones'))
+        else:
+            return render_to_response(
+                'administrador/crear_institucion.html', {'form': form},
+                context_instance=RequestContext(request))
+
+
+class ModificarInstitucion(UpdateView):
+    template_name = 'administrador/crear_institucion.html'
+    form_class = InstitucionForm
+    success_url = reverse_lazy('ver_instituciones')
+
+    def get_queryset(self):
+        return Institucion.objects.filter(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarInstitucion, self).get_context_data(**kwargs)
+        institucion = Institucion.objects.get(pk=self.kwargs['pk'])
+        form = InstitucionForm(initial={'name': institucion.name,
+                                        'address': institucion.address})
+        context['institucion'] = institucion
+        context['form'] = form
+        context['title'] = 'Modificar'
+
         return context
