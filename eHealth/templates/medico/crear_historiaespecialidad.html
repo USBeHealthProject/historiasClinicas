@@ -16,6 +16,7 @@
         {% bootstrap_form_errors form %}
     </div>
       {{form}}
+      <h4>Agregar pregunta: &nbsp;&nbsp;<i id="agregar_pregunta" class="fa fa-plus" style="color: green;"></i></h4>
     {% csrf_token %}
       {% buttons %}
         <div class="col-xs-12">
@@ -31,4 +32,12 @@
    </form>
 </div>
 
+{% endblock %}
+{% block custom_script %}
+<script type="text/javascript">
+    $('#agregar_pregunta').on('click', function(){
+        $(this).parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta">\
+                                <br><br>Respuesta <input type="text" name="respuesta">');
+    })
+</script>
 {% endblock %}

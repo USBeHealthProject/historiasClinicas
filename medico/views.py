@@ -831,7 +831,16 @@ class HistoriasEspecialidadCrear(View):
         """
         form = HistoriaEspecialidadForm(request.POST)
         if form.is_valid():
-            form.save()
+            historia = form.save()
+            counter = 0
+            preguntas = request.POST.getlist('pregunta')
+            respuestas = request.POST.getlist('respuesta')
+            for elem in preguntas:
+                pregunta = Pregunta(historia=historia,
+                                    pregunta=elem,
+                                    respuesta=respuestas[counter])
+                pregunta.save()
+                counter += 1
             return HttpResponseRedirect(reverse_lazy('historias_especialidad'))
         else:
             return render_to_response(
