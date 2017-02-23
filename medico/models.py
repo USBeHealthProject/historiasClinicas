@@ -7,6 +7,9 @@ from django.core.validators import MaxValueValidator
 class Especialidad(models.Model):
     nombre_especialidad = models.CharField(primary_key=True, max_length=30)
 
+    def __str__(self):
+        return str(self.nombre_especialidad)
+
 
 class Medico(models.Model):
     cedula = models.IntegerField(primary_key=True,
