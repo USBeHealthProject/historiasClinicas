@@ -1,11 +1,33 @@
 {% extends "base.html" %}
-{% block content %}
+{# Load the tag library #}
+{% load bootstrap3 %}
 
-<div id="cuerpoHeredado">
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1%}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
+{% block content %}<div id="cuerpoHeredado">
    <form action="{% url 'crear_historias_especialidad' %}" method="post">
       {% csrf_token %}
-      {{ form }}
-      <input type="submit" value="Submit" />
+      <div class="hidden">
+        {% bootstrap_form_errors form %}
+    </div>
+      {{form}}
+    {% csrf_token %}
+      {% buttons %}
+        <div class="col-xs-12">
+            <br>
+            <button id="id_submit" type="submit" class="btn btn-lg calculate">
+                Guardar
+            </button>
+            <br>
+            <br>
+        </div>
+        <div class="col-md-3"></div>
+    {% endbuttons %}
    </form>
 </div>
 
