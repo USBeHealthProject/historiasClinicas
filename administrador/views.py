@@ -290,3 +290,30 @@ class AgregarEspecialidad(CreateView):
             return render_to_response(
                 'administrador/crear_especialidad.html', {'form': form},
                 context_instance=RequestContext(request))
+
+
+class GestionarHistorias(TemplateView):
+    template_name = 'administrador/gestionar_historias.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            GestionarHistorias, self).get_context_data(**kwargs)
+
+        especialidades = Especialidad.objects.all()
+
+        context['especialidades'] = especialidades
+
+        return context
+
+
+class VerPreguntas(TemplateView):
+    template_name = 'administrador/ver_preguntas.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            VerPreguntas, self).get_context_data(**kwargs)
+        preguntas = Pregunta.objects.filter(historia__especialidad__pk=self.kwargs['pk'])
+
+        context['preguntas'] = preguntas
+
+        return context

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1%}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
+{% block content %}
+  <div id="cuerpoHeredado">
+    <center><h2>Preguntas</h2></center>
+    <!-- TABLA DE ESPECIALIDADES-->
+    <div id ="show-roles"><table>
+    <tr>
+      <th>Pregunta</th>
+    </tr>
+    {% for pregunta in preguntas %}
+    <tr>
+      <td>{{ pregunta.pregunta }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+</div>
+{% endblock %}
+{% block custom_script %}
+<script type="text/javascript">
+</script>
+{% endblock %}

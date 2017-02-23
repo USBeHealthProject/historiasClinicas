@@ -110,4 +110,14 @@ urlpatterns = patterns(
         'administrador.controllers.eliminar_especialidad',
         name='eliminar_especialidad'
     ),
+    url(
+        r'^gestionar-historias/$',
+        GestionarHistorias.as_view(),
+        name='gestionar_historias'
+    ),
+    url(
+        r'^ver-preguntas/(?P<pk>[\w ]+)$',
+        VerPreguntas.as_view(),
+        name='ver_preguntas'
+    ),
 )
