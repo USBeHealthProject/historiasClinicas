@@ -251,3 +251,42 @@ class ModificarInstitucion(UpdateView):
         context['title'] = 'Modificar'
 
         return context
+
+
+class VerEspecialidades(TemplateView):
+    template_name = 'administrador/ver_especialidades.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            VerEspecialidades, self).get_context_data(**kwargs)
+
+        especialidad = Especialidad.objects.all()
+        context['especialidades'] = especialidad
+        return context
+
+
+class AgregarEspecialidad(CreateView):
+    template_name = 'administrador/crear_especialidad.html'
+    form_class = EspecialidadForm
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            AgregarEspecialidad, self).get_context_data(**kwargs)
+
+        context['title'] = 'Agregar'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = EspecialidadForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('ver_especialidades'))
+        else:
+            return render_to_response(
+                'administrador/crear_especialidad.html', {'form': form},
+                context_instance=RequestContext(request))

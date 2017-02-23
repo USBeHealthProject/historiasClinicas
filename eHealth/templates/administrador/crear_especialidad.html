@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1%}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
+{% block content %}
+  <div id="cuerpoHeredado">
+    <br>
+    <h2>{{title}} Especialidad</h2>
+    <form action="" method=POST>
+    <div class="hidden">
+        {% bootstrap_form_errors form %}
+    </div>
+      {% bootstrap_form form layout='inline' %}
+    {% csrf_token %}
+      {% buttons %}
+        <div class="col-md-3"></div>
+        <div class="col-sm-4 col-md-6 text-center">
+            <br>
+            <button id="id_submit" type="submit" class="btn btn-lg calculate">
+                Guardar
+            </button>
+            <br>
+            <br>
+        </div>
+        <div class="col-md-3"></div>
+    {% endbuttons %}
+    </form>
+  </div>
+{% endblock %}

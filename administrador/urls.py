@@ -95,4 +95,19 @@ urlpatterns = patterns(
         'administrador.controllers.eliminar_institucion',
         name='eliminar_institucion'
     ),
+    url(
+        r'^ver-especialidades/$',
+        VerEspecialidades.as_view(),
+        name='ver_especialidades'
+    ),
+    url(
+        r'^agregar-especialidad/$',
+        AgregarEspecialidad.as_view(),
+        name='agregar_especialidad'
+    ),
+    url(
+        r'^eliminar-especialidad/(?P<name>[\w ]+)$',
+        'administrador.controllers.eliminar_especialidad',
+        name='eliminar_especialidad'
+    ),
 )

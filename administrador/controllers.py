@@ -89,3 +89,10 @@ def eliminar_institucion(request, name):
     institucion.delete()
     return HttpResponseRedirect(reverse_lazy(
         'ver_instituciones'))
+
+
+def eliminar_especialidad(request, name):
+    especialidad = Especialidad.objects.get(pk=name)
+    especialidad.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'ver_especialidades'))
