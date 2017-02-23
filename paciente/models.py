@@ -49,6 +49,7 @@ class Historiadetriaje(models.Model):
     extremidades = models.CharField(max_length=200)
     genitales = models.CharField(max_length=200)
 
+
 class Historia(models.Model):
     paciente = models.ForeignKey(Paciente,
                                  on_delete=models.CASCADE)
@@ -56,3 +57,10 @@ class Historia(models.Model):
                                on_delete=models.CASCADE)
     especialidad = models.ForeignKey('medico.Especialidad',
                                      on_delete=models.CASCADE)
+
+
+class Pregunta(models.Model):
+    historia = models.ForeignKey(Historia,
+                                 on_delete=models.CASCADE)
+    pregunta = models.CharField(max_length=200)
+    respuesta = models.CharField(max_length=200)
