@@ -312,7 +312,7 @@ class VerPreguntas(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(
             VerPreguntas, self).get_context_data(**kwargs)
-        preguntas = Pregunta.objects.filter(historia__especialidad__pk=self.kwargs['pk'])
+        preguntas = Pregunta.objects.filter(especialidad__pk=self.kwargs['pk'])
 
         context['preguntas'] = preguntas
 

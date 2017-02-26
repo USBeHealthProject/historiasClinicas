@@ -96,3 +96,14 @@ def eliminar_especialidad(request, name):
     especialidad.delete()
     return HttpResponseRedirect(reverse_lazy(
         'ver_especialidades'))
+
+
+def eliminar_pregunta(request, pk):
+    pregunta = Pregunta.objects.get(pk=pk)
+    pregunta_respuesta = PreguntaRespuesta.objects.get(pregunta__pk=pk)
+    especialidad = Especialidad.objects.get(pk=pregunta__especialidad__pk)
+    pregunta_respuesta.pregunta = None
+    pregunta_respuesta.save()
+    pregunta.delete()
+    return HttpResponseRedirect(reverse_lazy(
+        'ver_preguntas', kwargs={'pk': especialidad.pk}))

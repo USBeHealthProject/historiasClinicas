@@ -837,10 +837,18 @@ class HistoriasEspecialidadCrear(View):
             preguntas = request.POST.getlist('pregunta')
             respuestas = request.POST.getlist('respuesta')
             for elem in preguntas:
-                pregunta = Pregunta(historia=historia,
-                                    pregunta=elem,
-                                    respuesta=respuestas[counter])
-                pregunta.save()
+                try:
+                    pregunta = Pregunta.objects.get(pregunta=elem)
+                except:
+                    pregunta = Pregunta(pregunta=elem,
+                                        especialidad=historia.especialidad)
+                    pregunta.save()
+                pregunta_respuesta = PreguntaRespuesta(
+                    historia=historia,
+                    respuesta=respuestas[counter],
+                    pregunta=pregunta,
+                    pregunta_historia=elem)
+                pregunta_respuesta.save()
                 counter += 1
             return HttpResponseRedirect(reverse_lazy('historias_especialidad'))
         else:
@@ -928,10 +936,9 @@ class HistoriasEspecialidadModificar(UpdateView):
         context = super(
             HistoriasEspecialidadModificar, self).get_context_data(**kwargs)
         historia = Historia.objects.get(pk=self.kwargs['pk'])
-        preguntas = Pregunta.objects.filter(historia__pk=historia.pk)
-        medico = Medico.objects.get(pk=historia.medico.pk)
+        preguntas = PreguntaRespuesta.objects.filter(historia__pk=historia.pk)
         form = HistoriaEspecialidadForm(
-            initial={'medico_triaje': medico,
+            initial={'medico': Medico.objects.get(pk=historia.medico.pk),
                      'paciente': historia.paciente,
                      'especialidad': historia.especialidad
                      }
@@ -958,27 +965,34 @@ class HistoriasEspecialidadModificar(UpdateView):
             preguntas = request.POST.getlist('pregunta')
             respuestas = request.POST.getlist('respuesta')
             for elem in preguntas:
-
-                pregunta = Pregunta(historia=historia,
-                                    pregunta=elem,
-                                    respuesta=respuestas[counter])
-                pregunta.save()
+                try:
+                    pregunta = Pregunta.objects.get(pregunta=elem)
+                except:
+                    pregunta = Pregunta(pregunta=elem,
+                                        especialidad=historia.especialidad)
+                    pregunta.save()
+                pregunta_respuesta = PreguntaRespuesta(
+                    historia=historia,
+                    respuesta=respuestas[counter],
+                    pregunta=pregunta,
+                    pregunta_historia=elem)
+                pregunta_respuesta.save()
                 counter += 1
 
             # Obtenemos las preguntas y respuestas existentes
             preguntas_existentes = request.POST.getlist('preguntas_existentes')
             for pe in preguntas_existentes:
-                preg = request.POST['pregunta_' + pe]
                 resp = request.POST['respuesta_' + pe]
-                pregunta = Pregunta.objects.get(pk=pe)
-                pregunta.pregunta = preg
-                pregunta.respuesta = resp
-                pregunta.save()
+                print pe
+                pregunta_respuesta = PreguntaRespuesta.objects.get(pk=pe)
+                print "pase"
+                pregunta_respuesta.respuesta = resp
+                pregunta_respuesta.save()
 
             return HttpResponseRedirect(reverse_lazy('historias_especialidad'))
         else:
             historia = Historia.objects.get(pk=self.kwargs['pk'])
-            preguntas = Pregunta.objects.filter(historia__pk=historia.pk)
+            preguntas = PreguntaRespuesta.objects.filter(historia__pk=historia.pk)
             return render_to_response(
                 'medico/crear_historiaespecialidad.html',
                 {'form': form,
@@ -989,7 +1003,7 @@ class HistoriasEspecialidadModificar(UpdateView):
 
 def obtener_preguntas_especialidad(request, especialidad):
     preguntas = Pregunta.objects.filter(
-        historia__especialidad__pk=especialidad)
+        especialidad__pk=especialidad)
     arreglo_preguntas = []
     for preg in preguntas:
         arreglo_preguntas.append(str(preg.pregunta))

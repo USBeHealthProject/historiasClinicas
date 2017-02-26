@@ -60,7 +60,20 @@ class Historia(models.Model):
 
 
 class Pregunta(models.Model):
+    pregunta = models.CharField(max_length=200)
+    especialidad = especialidad = models.ForeignKey('medico.Especialidad',
+                                                    on_delete=models.CASCADE,
+                                                    null=True)
+
+    def __str__(self):
+        return str(self.pregunta)
+
+
+class PreguntaRespuesta(models.Model):
     historia = models.ForeignKey(Historia,
                                  on_delete=models.CASCADE)
-    pregunta = models.CharField(max_length=200)
     respuesta = models.CharField(max_length=200)
+    pregunta = models.ForeignKey(Pregunta,
+                                 on_delete=models.CASCADE,
+                                 null=True)
+    pregunta_historia = models.CharField(max_length=200, null=True)
