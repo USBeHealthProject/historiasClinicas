@@ -17,12 +17,6 @@
         {% bootstrap_form_errors form %}
     </div>
       {{form}}
-      {% for pregunta in preguntas %}
-        <br>
-        <br>
-        <h4>Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta" value="{{pregunta.pregunta}}" readonly></h4>
-        <h4>Respuesta <input type="text" name="respuesta" value=""></h4>
-        {% endfor %}
       <h4>Agregar pregunta: &nbsp;&nbsp;<i id="agregar_pregunta" class="fa fa-plus" style="color: green;"></i></h4>
     {% csrf_token %}
       {% buttons %}
@@ -55,7 +49,7 @@
               console.log(response);
               $.each(response.preguntas, function(k, v) {
                   var pregunta = JSON.stringify(this);
-                  $('#agregar_pregunta').parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta" value=' + pregunta + '>\
+                  $('#agregar_pregunta').parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta" value=' + pregunta + ' readonly>\
                               <br><br>Respuesta <input type="text" name="respuesta">');
               });
           },
