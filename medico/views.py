@@ -926,6 +926,7 @@ class HistoriasEspecialidadModificar(UpdateView):
         context = super(
             HistoriasEspecialidadModificar, self).get_context_data(**kwargs)
         historia = Historia.objects.get(pk=self.kwargs['pk'])
+        preguntas = Pregunta.objects.filter(historia__pk=historia.pk)
         form = HistoriaEspecialidadForm(
             initial={'medico_triaje': historia.medico,
                      'paciente': historia.paciente,
@@ -935,5 +936,49 @@ class HistoriasEspecialidadModificar(UpdateView):
 
         context['form'] = form
         context['historia'] = historia
+        context['preguntas'] = preguntas
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        instancia = Historia.objects.get(pk=kwargs['pk'])
+        form = HistoriaEspecialidadForm(request.POST, instance=instancia)
+        if form.is_valid():
+            historia = form.save()
+
+            # Obtenemos las preguntas y respuestas nuevas
+            counter = 0
+            preguntas = request.POST.getlist('pregunta')
+            respuestas = request.POST.getlist('respuesta')
+            for elem in preguntas:
+
+                pregunta = Pregunta(historia=historia,
+                                    pregunta=elem,
+                                    respuesta=respuestas[counter])
+                pregunta.save()
+                counter += 1
+
+            # Obtenemos las preguntas y respuestas existentes
+            preguntas_existentes = request.POST.getlist('preguntas_existentes')
+            for pe in preguntas_existentes:
+                preg = request.POST['pregunta_' + pe]
+                resp = request.POST['respuesta_' + pe]
+                pregunta = Pregunta.objects.get(pk=pe)
+                pregunta.pregunta = preg
+                pregunta.respuesta = resp
+                pregunta.save()
+
+            return HttpResponseRedirect(reverse_lazy('historias_especialidad'))
+        else:
+            historia = Historia.objects.get(pk=self.kwargs['pk'])
+            preguntas = Pregunta.objects.filter(historia__pk=historia.pk)
+            return render_to_response(
+                'medico/crear_historiaespecialidad.html',
+                {'form': form,
+                 'historia': historia,
+                 'preguntas': preguntas},
+                context_instance=RequestContext(request))

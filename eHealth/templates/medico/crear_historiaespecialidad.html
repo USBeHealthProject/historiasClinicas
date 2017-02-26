@@ -9,7 +9,8 @@
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 {% load static %}
-{% block content %}<div id="cuerpoHeredado">
+{% block content %}
+<div id="cuerpoHeredado">
    <form action="{% url 'crear_historias_especialidad' %}" method="post">
       {% csrf_token %}
       <div class="hidden">

@@ -1,12 +1,49 @@
 {% extends "base.html" %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1%}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
 {% block content %}
 
 <div id="cuerpoHeredado">
    <form action="{% url 'ver_historia_especialidad' historia.pk %}" method="post">
       {% csrf_token %}
       {{ form }}
-      <input type="submit" value="Submit" />
+      {% for pregunta in preguntas %}
+        <br>
+        <br>
+        <input type="hidden" name="preguntas_existentes" value="{{pregunta.pk}}">
+        <h4>Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta_{{pregunta.pk}}" value="{{pregunta.pregunta}}"></h4>
+        <h4>Respuesta <input type="text" name="respuesta_{{pregunta.pk}}" value="{{pregunta.respuesta}}"></h4>
+        {% endfor %}
+      <h4>Agregar pregunta: &nbsp;&nbsp;<i id="agregar_pregunta" class="fa fa-plus" style="color: green;"></i></h4>
+        {% csrf_token %}
+          {% buttons %}
+            <div class="col-xs-12">
+                <br>
+                <button id="id_submit" type="submit" class="btn btn-lg calculate">
+                    Guardar
+                </button>
+                <br>
+                <br>
+            </div>
+            <div class="col-md-3"></div>
+        {% endbuttons %}
    </form>
 </div>
 
+{% endblock %}
+{% block custom_script %}
+<script type="text/javascript">
+    $('#agregar_pregunta').on('click', function(){
+        $(this).parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta">\
+                                <br><br>Respuesta <input type="text" name="respuesta">');
+    })
+</script>
 {% endblock %}
