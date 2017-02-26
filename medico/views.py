@@ -837,18 +837,14 @@ class HistoriasEspecialidadCrear(View):
             preguntas = request.POST.getlist('pregunta')
             respuestas = request.POST.getlist('respuesta')
             for elem in preguntas:
-                try:
-                    pregunta = Pregunta.objects.get(pregunta=elem)
-                except:
-                    pregunta = Pregunta(pregunta=elem,
-                                        especialidad=historia.especialidad)
-                    pregunta.save()
-                pregunta_respuesta = PreguntaRespuesta(
-                    historia=historia,
-                    respuesta=respuestas[counter],
-                    pregunta=pregunta,
-                    pregunta_historia=elem)
-                pregunta_respuesta.save()
+                pregunta = get_pregunta(elem, historia.especialidad)
+                result = crear_preguntarespuesta(
+                    historia, respuestas[counter], pregunta, elem)
+                if result is False:
+                    return render_to_response(
+                        'medico/crear_historiaespecialidad.html',
+                        {'form': form},
+                        context_instance=RequestContext(request))
                 counter += 1
             return HttpResponseRedirect(reverse_lazy('historias_especialidad'))
         else:

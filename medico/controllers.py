@@ -456,8 +456,33 @@ def eliminar_historia_clinica(request, id):
     return HttpResponseRedirect(reverse_lazy(
         'historias_clinicas'))
 
+
 def eliminar_historia_especialidad(request, id):
     historia = Historia.objects.get(pk=id)
     historia.delete()
     return HttpResponseRedirect(reverse_lazy(
         'historias_especialidad'))
+
+
+def get_pregunta(pregunta, especialidad):
+    try:
+        pregunta = Pregunta.objects.get(pregunta=pregunta)
+    except:
+        pregunta = Pregunta(pregunta=pregunta,
+                            especialidad=especialidad)
+        pregunta.save()
+    return pregunta
+
+
+def crear_preguntarespuesta(historia, respuesta,
+                            pregunta_object, pregunta):
+    try:
+        pregunta_respuesta = PreguntaRespuesta(
+            historia=historia,
+            respuesta=respuesta,
+            pregunta=pregunta_object,
+            pregunta_historia=pregunta)
+        pregunta_respuesta.save()
+        return True
+    except:
+        return False
