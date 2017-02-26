@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render
 from django.contrib.auth import *
@@ -14,6 +14,7 @@ from medico.controllers import *
 import datetime
 import calendar
 import parsedatetime as pdt
+import json
 
 
 class PerfilMedico(CreateView):
@@ -855,7 +856,8 @@ class HistoriasClinicasCrear(View):
         form = HistoriaClinicaForm(
             initial={'medico_triaje': Medico.objects.get(
                 usuario__user=request.user)})
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name,
+                      {'form': form})
 
     def post(self, request, *args, **kwargs):
         """
@@ -927,8 +929,9 @@ class HistoriasEspecialidadModificar(UpdateView):
             HistoriasEspecialidadModificar, self).get_context_data(**kwargs)
         historia = Historia.objects.get(pk=self.kwargs['pk'])
         preguntas = Pregunta.objects.filter(historia__pk=historia.pk)
+        medico = Medico.objects.get(pk=historia.medico.pk)
         form = HistoriaEspecialidadForm(
-            initial={'medico_triaje': historia.medico,
+            initial={'medico_triaje': medico,
                      'paciente': historia.paciente,
                      'especialidad': historia.especialidad
                      }
@@ -982,3 +985,14 @@ class HistoriasEspecialidadModificar(UpdateView):
                  'historia': historia,
                  'preguntas': preguntas},
                 context_instance=RequestContext(request))
+
+
+def obtener_preguntas_especialidad(request, especialidad):
+    preguntas = Pregunta.objects.filter(
+        historia__especialidad__pk=especialidad)
+    arreglo_preguntas = []
+    for preg in preguntas:
+        arreglo_preguntas.append(str(preg.pregunta))
+    data = {'preguntas': arreglo_preguntas}
+    return HttpResponse(json.dumps(data), status=200,
+                        content_type='application/json')

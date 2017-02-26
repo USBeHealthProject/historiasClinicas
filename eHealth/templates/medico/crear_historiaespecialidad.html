@@ -17,6 +17,12 @@
         {% bootstrap_form_errors form %}
     </div>
       {{form}}
+      {% for pregunta in preguntas %}
+        <br>
+        <br>
+        <h4>Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta" value="{{pregunta.pregunta}}" readonly></h4>
+        <h4>Respuesta <input type="text" name="respuesta" value=""></h4>
+        {% endfor %}
       <h4>Agregar pregunta: &nbsp;&nbsp;<i id="agregar_pregunta" class="fa fa-plus" style="color: green;"></i></h4>
     {% csrf_token %}
       {% buttons %}
@@ -36,9 +42,32 @@
 {% endblock %}
 {% block custom_script %}
 <script type="text/javascript">
-    $('#agregar_pregunta').on('click', function(){
-        $(this).parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta">\
-                                <br><br>Respuesta <input type="text" name="respuesta">');
-    })
+
+  $('#id_especialidad').on('change', function(){
+  var especialidad = $(this).val();
+  url = "{% url 'obtener_preguntas_especialidad' 0 %}".replace('0', especialidad);
+  $.ajax({
+          type: 'GET',
+          url: url,
+          contentType:'application/json; charset=utf-8',
+
+          success: function(response) {
+              console.log(response);
+              $.each(response.preguntas, function(k, v) {
+                  var pregunta = JSON.stringify(this);
+                  $('#agregar_pregunta').parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta" value=' + pregunta + '>\
+                              <br><br>Respuesta <input type="text" name="respuesta">');
+              });
+          },
+          error: function(error) {
+              console.log(error);
+          }
+      });
+  });
+
+  $('#agregar_pregunta').on('click', function(){
+      $(this).parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta">\
+                              <br><br>Respuesta <input type="text" name="respuesta">');
+  })
 </script>
 {% endblock %}

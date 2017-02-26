@@ -195,9 +195,14 @@ urlpatterns = [
         name='ver_historia_especialidad'
     ),
     url(
-        r'^eliminar-historia_especialidad/(?P<id>\w+)$',
+        r'^eliminar-historia-especialidad/(?P<id>\w+)$',
         'medico.controllers.eliminar_historia_especialidad',
         name='eliminar_historia_especialidad'
+    ),
+    url(
+        r'^obtener-preguntas-especialidad/(?P<especialidad>[\w ]+)$',
+        'medico.views.obtener_preguntas_especialidad',
+        name='obtener_preguntas_especialidad'
     ),
 
 ]
