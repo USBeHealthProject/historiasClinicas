@@ -994,12 +994,3 @@ class HistoriasEspecialidadModificar(UpdateView):
                 context_instance=RequestContext(request))
 
 
-def obtener_preguntas_especialidad(request, especialidad):
-    preguntas = Pregunta.objects.filter(
-        especialidad__pk=especialidad)
-    arreglo_preguntas = []
-    for preg in preguntas:
-        arreglo_preguntas.append(str(preg.pregunta))
-    data = {'preguntas': arreglo_preguntas}
-    return HttpResponse(json.dumps(data), status=200,
-                        content_type='application/json')

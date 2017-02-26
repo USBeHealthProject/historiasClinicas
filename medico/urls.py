@@ -201,7 +201,7 @@ urlpatterns = [
     ),
     url(
         r'^obtener-preguntas-especialidad/(?P<especialidad>[\w ]+)$',
-        'medico.views.obtener_preguntas_especialidad',
+        'medico.controllers.obtener_preguntas_especialidad',
         name='obtener_preguntas_especialidad'
     ),
 

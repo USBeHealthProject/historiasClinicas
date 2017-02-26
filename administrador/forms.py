@@ -146,3 +146,10 @@ class EspecialidadForm(forms.ModelForm):
     class Meta:
         model = Especialidad
         fields = '__all__'
+
+
+class PreguntasForm(forms.ModelForm):
+
+    class Meta:
+        model = Pregunta
+        fields = ['pregunta']

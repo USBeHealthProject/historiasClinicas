@@ -317,3 +317,25 @@ class VerPreguntas(TemplateView):
         context['preguntas'] = preguntas
 
         return context
+
+
+class ModificarPregunta(UpdateView):
+    template_name = 'administrador/modificar_pregunta.html'
+    form_class = PreguntasForm
+    success_url = reverse_lazy('gestionar_historias')
+
+    def get_queryset(self):
+        return Pregunta.objects.filter(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ModificarPregunta, self).get_context_data(**kwargs)
+
+        pregunta = Pregunta.objects.get(pk=self.kwargs['pk'])
+
+        form = PreguntasForm(
+            initial={'pregunta': pregunta.pregunta})
+
+        context['form'] = form
+
+        return context
