@@ -486,3 +486,13 @@ def crear_preguntarespuesta(historia, respuesta,
         return True
     except:
         return False
+
+
+def modificar_respuesta(respuesta, pregunta_pk):
+    try:
+        pregunta_respuesta = PreguntaRespuesta.objects.get(pk=pregunta_pk)
+        pregunta_respuesta.respuesta = respuesta
+        pregunta_respuesta.save()
+        return True
+    except:
+        return False
