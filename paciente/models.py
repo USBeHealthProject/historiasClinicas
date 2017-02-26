@@ -61,9 +61,9 @@ class Historia(models.Model):
 
 class Pregunta(models.Model):
     pregunta = models.CharField(max_length=200)
-    especialidad = especialidad = models.ForeignKey('medico.Especialidad',
-                                                    on_delete=models.CASCADE,
-                                                    null=True)
+    especialidad = models.ForeignKey('medico.Especialidad',
+                    on_delete=models.CASCADE,
+                    null=True)
 
     def __str__(self):
         return str(self.pregunta)

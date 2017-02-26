@@ -101,7 +101,7 @@ def eliminar_especialidad(request, name):
 def eliminar_pregunta(request, pk):
     pregunta = Pregunta.objects.get(pk=pk)
     pregunta_respuesta = PreguntaRespuesta.objects.get(pregunta__pk=pk)
-    especialidad = Especialidad.objects.get(pk=pregunta__especialidad__pk)
+    especialidad = Especialidad.objects.get(pk=pregunta.especialidad.pk)
     pregunta_respuesta.pregunta = None
     pregunta_respuesta.save()
     pregunta.delete()
