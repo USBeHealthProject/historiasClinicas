@@ -676,17 +676,6 @@ class BuscarMedico(TemplateView):
         return context
 
 
-class BuscarHistoriadetriaje(TemplateView):
-    template_name = 'medico/historias_clinicas.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(
-            BuscarHistoriadetriaje, self).get_context_data(**kwargs)
-        Historiasdetriaje = Historiadetriaje.objects.all()
-        context['result'] = Historiasdetriaje
-        return context
-
-
 class BuscarHistoria(TemplateView):
     template_name = 'medico/historias_especialidad.html'
 
