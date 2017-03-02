@@ -135,11 +135,6 @@ urlpatterns = [
         name='buscar_medico'
     ),
     url(
-        r'^medico/historias/$',
-        BuscarHistoriadetriaje.as_view(),
-        name='historias_clinicas'
-    ),
-    url(
         r'^ver-citas/(?P<id>\w+)$',
         VerCitas.as_view(),
         name='ver_citas'

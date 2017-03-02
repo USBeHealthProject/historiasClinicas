@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for historia in result %}
+            {% for historia in historias %}
                 <tr>
                     <td><a href="{% url 'ver_historia_clinica' historia.pk %}">{{historia.paciente.cedula}}</a></td>
             		<td>{{historia.paciente.first_name}}</td>
