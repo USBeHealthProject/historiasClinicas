@@ -130,4 +130,9 @@ urlpatterns = patterns(
         ModificarPregunta.as_view(),
         name='modificar_pregunta'
     ),
+    url(
+        r'^modificar-pregunta-ajax/(?P<pk>[\w ]+)$',
+        'administrador.controllers.modificar_pregunta',
+        name='modificar_pregunta_ajax'
+    ),
 )

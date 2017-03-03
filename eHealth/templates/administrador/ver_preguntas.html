@@ -13,26 +13,64 @@
   <div id="cuerpoHeredado">
     <center><h2>Preguntas</h2></center>
     <!-- TABLA DE ESPECIALIDADES-->
-    <div id ="show-roles"><table>
-    <tr>
-      <th>Pregunta</th>
-      <th></th>
-    </tr>
-    {% for pregunta in preguntas %}
-    <tr>
-      <td>{{ pregunta.pregunta }}</td>
-      <td style="text-align: right;">
-        <a href="{% url 'modificar_pregunta' pregunta.pk %}"><i class="fa fa-pencil" style="font-size:16px;color:black"></i></a>
-        <a href="{% url 'eliminar_pregunta' pregunta.pk %}"><i class="fa fa-trash" style="font-size:16px;color:black"></i></button>
+    <div id ="show-roles">
+      <table>
+        <tr>
+          <th>Pregunta</th>
+          <th>Obligatoria</th>
+          <th></th>
+        </tr>
+        {% for pregunta in preguntas %}
+        <tr>
+          <td>{{ pregunta.pregunta }}</td>
+          <td><input type="checkbox" name="obligatoria" id='check_obli' value="{{ pregunta.pk }}" {{pregunta.obligatoria|yesno:'checked, '}}></td>
+          <td style="text-align: right;">
+            <a href="{% url 'modificar_pregunta' pregunta.pk %}"><i class="fa fa-pencil" style="font-size:16px;color:black"></i></a>
+            <a href="{% url 'eliminar_pregunta' pregunta.pk %}"><i class="fa fa-trash" style="font-size:16px;color:black"></i></button>
 
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
   </div>
-</div>
+
 {% endblock %}
 {% block custom_script %}
 <script type="text/javascript">
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+$(document).ready(function() {
+  $('#check_obli').on('change', function() {
+    $.ajax({
+      type: 'POST',
+      url: "{% url 'modificar_pregunta_ajax' 0 %}".replace('0', this.value),
+      headers: {"X-CSRFToken": getCookie('csrftoken')},
+      contentType:'application/json; charset=utf-8',
+      success: function(response) {
+        console.log(response);
+        console.log("BIEN");
+      },
+      error: function(error) {
+        console.log(error);
+        console.log("MAL");
+      }
+    });
+  });
+});
 </script>
 {% endblock %}
