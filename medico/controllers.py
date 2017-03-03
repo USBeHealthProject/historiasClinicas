@@ -4,7 +4,8 @@ from paciente.models import *
 import datetime
 import parsedatetime as pdt
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+import json
 
 
 def editar_medico(user, nombre, apellido, email, sexo, fecha, estado_civil,
