@@ -467,10 +467,10 @@ def eliminar_historia_especialidad(request, id):
 
 def obtener_preguntas_especialidad(request, especialidad):
     preguntas = Pregunta.objects.filter(
-        especialidad__pk=especialidad)
+        especialidad__pk=especialidad).order_by('-obligatoria')
     arreglo_preguntas = []
     for preg in preguntas:
-        arreglo_preguntas.append(str(preg.pregunta))
+        arreglo_preguntas.append({'pregunta': str(preg.pregunta), 'obligatoria': preg.obligatoria})
     data = {'preguntas': arreglo_preguntas}
     return HttpResponse(json.dumps(data), status=200,
                         content_type='application/json')
