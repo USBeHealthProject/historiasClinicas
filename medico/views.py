@@ -826,6 +826,9 @@ class HistoriasEspecialidadCrear(View):
             preguntas = request.POST.getlist('pregunta')
             respuestas = request.POST.getlist('respuesta')
             for elem in preguntas:
+                if not respuestas[counter]:
+                    counter += 1
+                    continue
                 pregunta = get_pregunta(elem, historia.especialidad)
                 result = crear_preguntarespuesta(
                     historia, respuestas[counter], pregunta, elem)
