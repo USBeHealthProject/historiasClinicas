@@ -64,6 +64,7 @@ class Pregunta(models.Model):
     especialidad = models.ForeignKey('medico.Especialidad',
                     on_delete=models.CASCADE,
                     null=True)
+    obligatoria = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.pregunta)

@@ -452,7 +452,7 @@ color: #36FF09;
 [type="checkbox"]:not(:checked),
 [type="checkbox"]:checked {
   position: absolute;
-  left: -9999px;
+  /*left: -9999px;*/
 }
 [type="checkbox"]:not(:checked) + label,
 [type="checkbox"]:checked + label {

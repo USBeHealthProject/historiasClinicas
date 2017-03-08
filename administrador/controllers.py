@@ -5,7 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
 import json
-
+from django.db.models import F
 
 def register_user(form):
     # Almacenamos el usuario
@@ -107,3 +107,9 @@ def eliminar_pregunta(request, pk):
     pregunta.delete()
     return HttpResponseRedirect(reverse_lazy(
         'ver_preguntas', kwargs={'pk': especialidad.pk}))
+
+def modificar_pregunta(request, pk):
+    pregunta = Pregunta.objects.get(pk=pk)
+    pregunta.obligatoria = not pregunta.obligatoria
+    pregunta.save()
+    return HttpResponse(status=200)

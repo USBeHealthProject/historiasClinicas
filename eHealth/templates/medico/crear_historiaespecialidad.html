@@ -17,6 +17,7 @@
         {% bootstrap_form_errors form %}
     </div>
       {{form}}
+      <div id='preguntas'></div>
       <h4>Agregar pregunta: &nbsp;&nbsp;<i id="agregar_pregunta" class="fa fa-plus" style="color: green;"></i></h4>
     {% csrf_token %}
       {% buttons %}
@@ -40,6 +41,7 @@
   $('#id_especialidad').on('change', function(){
   var especialidad = $(this).val();
   url = "{% url 'obtener_preguntas_especialidad' 0 %}".replace('0', especialidad);
+  $('#preguntas').empty();
   $.ajax({
           type: 'GET',
           url: url,
@@ -48,9 +50,9 @@
           success: function(response) {
               console.log(response);
               $.each(response.preguntas, function(k, v) {
-                  var pregunta = JSON.stringify(this);
-                  $('#agregar_pregunta').parent().append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta" value=' + pregunta + ' readonly>\
-                              <br><br>Respuesta <input type="text" name="respuesta">');
+                  console.log(this)
+                  var pregunta = JSON.stringify(this.pregunta);
+                  $('#preguntas').append('<br><br><br> Pregunta &nbsp;&nbsp;&nbsp;<input type="text" name="pregunta" value=' + pregunta + ' readonly><br><br>Respuesta <input type="text" name="respuesta"'+ (this.obligatoria ? 'required' : '') + '>');
               });
           },
           error: function(error) {
