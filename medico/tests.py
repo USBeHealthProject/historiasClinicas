@@ -38,7 +38,21 @@ class MedicoTestCase(TestCase):
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
         
         Historia.objects.create(paciente=Pac, medico=med, especialidad=esp )
+        
+        hist = Historia.objects.get(especialidad=esp)
 
+        Historiadetriaje.objects.create(paciente=Pac, medico_triaje=med, antecedentes_personales='x', 
+                                        antecedentes_familiares='x', motivo_consulta='x', enfermedad_actual='x',
+                                        peso=1, talla=1, signos_vitales='x', piel='x', ojos='x', fosas_nasales='x',
+                                        conductos_auditivos='x', cavidad_oral='x', cuello='x', columna='x', torax='x', 
+                                        extremidades='x', genitales='x')
+        
+        Pregunta.objects.create(pregunta='x',especialidad=esp)
+        
+        preg = Pregunta.objects.get(pregunta='x')
+        
+        PreguntaRespuesta.objects.create(historia=hist,respuesta='respuesta',
+                                         pregunta=preg,pregunta_historia='x')
     
     def test_editar_medico_first_name(self):    
         med = Medico.objects.get(cedula=1111)
@@ -81,8 +95,16 @@ class MedicoTestCase(TestCase):
     
     
     
-    
-    
+    def test_eliminar_historia_clinica(self):
+        request = self.factory.get('/medico/eliminar-historia_clinica')
+        Pac = Paciente.objects.get(cedula=2222)
+        hist = Historiadetriaje.objects.get(paciente=Pac)
+        eliminar_historia_clinica(request, hist.id)
+        try:
+            hist = Historiadetriaje.paciente.objects.get(cedula=2222)
+        except:
+            pass
+        
     def test_eliminar_historia_especialidad(self):
         request = self.factory.get('/medico/eliminar-historia-especialidad')
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
@@ -92,5 +114,42 @@ class MedicoTestCase(TestCase):
             hist = Historia.objects.get(especialidad=esp)
         except:
             pass
+        
+    
+    def test_get_pregunta(self):
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        preg = get_pregunta('x',esp)
+        self.assertEqual(preg.pregunta,'x')
+        
+    def test_get_pregunta_quenoexiste(self):    
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        preg = get_pregunta('y',esp)
+        self.assertEqual(preg.pregunta,'y')
+      
+        
+    def test_get_pregunta_210char(self):   
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        try:
+            preg = get_pregunta('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',esp)
+        except:
+            pass          
+        
+    def test_crear_preguntarespuesta(self):
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        hist = Historia.objects.get(especialidad=esp)
+        preg = Pregunta.objects.get(pregunta='x')
+        pregresp = crear_preguntarespuesta(historia=hist,respuesta='respuesta',
+                                pregunta_object=preg,pregunta='x')
+        self.assertEqual(pregresp,True)
+        
+    def test_crear_preguntarespuesta_intpregobj(self):
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        hist = Historia.objects.get(especialidad=esp)
+        preg = Pregunta.objects.get(pregunta='x')
+        
+        pregresp = crear_preguntarespuesta(historia=hist,respuesta='respuesta',
+                        pregunta_object='888',pregunta='x')
+        
+    
         
         

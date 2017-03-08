@@ -479,22 +479,24 @@ def get_pregunta(pregunta, especialidad):
     try:
         pregunta = Pregunta.objects.get(pregunta=pregunta)
     except:
-        pregunta = Pregunta(pregunta=pregunta,
-                            especialidad=especialidad)
-        pregunta.save()
+        if pregunta != '':
+            pregunta = Pregunta(pregunta=pregunta,
+                        especialidad=especialidad)
+            pregunta.save()
     return pregunta
 
 
 def crear_preguntarespuesta(historia, respuesta,
                             pregunta_object, pregunta):
     try:
-        pregunta_respuesta = PreguntaRespuesta(
-            historia=historia,
-            respuesta=respuesta,
-            pregunta=pregunta_object,
-            pregunta_historia=pregunta)
-        pregunta_respuesta.save()
-        return True
+        if pregunta_object is not str:
+            pregunta_respuesta = PreguntaRespuesta(
+                historia=historia,
+                respuesta=respuesta,
+                pregunta=pregunta_object,
+                pregunta_historia=pregunta)
+            pregunta_respuesta.save()
+            return True
     except:
         return False
 
