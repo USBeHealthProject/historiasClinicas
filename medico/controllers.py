@@ -490,7 +490,6 @@ def get_pregunta(pregunta, especialidad):
 def crear_preguntarespuesta(historia, respuesta,
                             pregunta_object, pregunta):
     try:
-        if pregunta_object is not str:
             pregunta_respuesta = PreguntaRespuesta(
                 historia=historia,
                 respuesta=respuesta,

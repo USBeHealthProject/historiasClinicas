@@ -34,10 +34,13 @@ class MedicoTestCase(TestCase):
         Pac = Paciente.objects.get(cedula=2222)
         
         Especialidad.objects.create(nombre_especialidad="especialidad")
+        Especialidad.objects.create(nombre_especialidad="especialidad2")
         
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        esp2 = Especialidad.objects.get(nombre_especialidad="especialidad2")
         
         Historia.objects.create(paciente=Pac, medico=med, especialidad=esp )
+        Historia.objects.create(paciente=Pac, medico=med, especialidad=esp2 )
         
         hist = Historia.objects.get(especialidad=esp)
 
@@ -94,7 +97,7 @@ class MedicoTestCase(TestCase):
     
     
     
-    
+    #  eliminar_historia_clinica
     def test_eliminar_historia_clinica(self):
         request = self.factory.get('/medico/eliminar-historia_clinica')
         Pac = Paciente.objects.get(cedula=2222)
@@ -104,7 +107,8 @@ class MedicoTestCase(TestCase):
             hist = Historiadetriaje.paciente.objects.get(cedula=2222)
         except:
             pass
-        
+    
+    #  eliminar_historia_especialidad   
     def test_eliminar_historia_especialidad(self):
         request = self.factory.get('/medico/eliminar-historia-especialidad')
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
@@ -115,7 +119,7 @@ class MedicoTestCase(TestCase):
         except:
             pass
         
-    
+    #  get_pregunta
     def test_get_pregunta(self):
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
         preg = get_pregunta('x',esp)
@@ -133,22 +137,49 @@ class MedicoTestCase(TestCase):
             preg = get_pregunta('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',esp)
         except:
             pass          
-        
+    
+    #  crear_preguntarespuesta    
     def test_crear_preguntarespuesta(self):
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
         hist = Historia.objects.get(especialidad=esp)
         preg = Pregunta.objects.get(pregunta='x')
-        pregresp = crear_preguntarespuesta(historia=hist,respuesta='respuesta',
-                                pregunta_object=preg,pregunta='x')
-        self.assertEqual(pregresp,True)
+        pregresp = crear_preguntarespuesta(historia=hist,respuesta='re',
+                                pregunta_object=preg,pregunta='preguntauno')
+        self.assertTrue(pregresp)
+    
+    def test_crear_preguntarespuesta_check(self):
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad2")
+        hist = Historia.objects.get(especialidad=esp)
+        preg = Pregunta.objects.get(pregunta='x')
+        pregresp = crear_preguntarespuesta(historia=hist,respuesta='re',
+                                pregunta_object=preg,pregunta='preguntauno')
+        pr = PreguntaRespuesta.objects.get(historia=hist)
+        self.assertEqual(pr.respuesta,'re')
+        self.assertEqual(pr.pregunta_historia,'preguntauno')
+        self.assertEqual(pr.pregunta ,preg)
         
-    def test_crear_preguntarespuesta_intpregobj(self):
+    #  modificar_respuesta
+    def test_modificar_respuesta(self):
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
         hist = Historia.objects.get(especialidad=esp)
         preg = Pregunta.objects.get(pregunta='x')
+        pregresp = crear_preguntarespuesta(historia=hist,respuesta='re',
+                                pregunta_object=preg,pregunta='preguntauno')
+        pr = PreguntaRespuesta.objects.get(respuesta='re')
+        mod = modificar_respuesta("nuevarespuesta",pr.pk)
+        self.assertTrue(mod)
         
-        pregresp = crear_preguntarespuesta(historia=hist,respuesta='respuesta',
-                        pregunta_object='888',pregunta='x')
+    def test_modificar_respuesta_checkrespuesta(self):
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        hist = Historia.objects.get(especialidad=esp)
+        preg = Pregunta.objects.get(pregunta='x')
+        pregresp = crear_preguntarespuesta(historia=hist,respuesta='re',
+                                pregunta_object=preg,pregunta='preguntauno')
+        pr = PreguntaRespuesta.objects.get(respuesta='re')
+        mod = modificar_respuesta("nuevarespuesta",pr.pk)
+        prnueva = PreguntaRespuesta.objects.get(pk=pr.pk)
+       
+        self.assertEqual(prnueva.respuesta,"nuevarespuesta")
         
     
         
