@@ -75,17 +75,16 @@ class AdministradorTestCase(TestCase):
             preg = Pregunta.objects.get(pregunta='x')
         except:
             pass
-    '''    
+       
     def test_modificar_pregunta(self):
         request = self.factory.get('modificar-pregunta')
         preg = Pregunta.objects.get(pregunta='x')
         obligatoria = preg.obligatoria
         modificar_pregunta(request, preg.pk)
+        preg = Pregunta.objects.get(pregunta='x')
         nuevaobligatoria = preg.obligatoria
         self.assertNotEqual(obligatoria,nuevaobligatoria)
-    '''   
-        
-        
+     
         
         
         

@@ -169,6 +169,16 @@ class MedicoTestCase(TestCase):
         mod = modificar_respuesta("nuevarespuesta",pr.pk)
         self.assertTrue(mod)
         
+    def test_modificar_respuesta_210char(self):
+        esp = Especialidad.objects.get(nombre_especialidad="especialidad")
+        hist = Historia.objects.get(especialidad=esp)
+        preg = Pregunta.objects.get(pregunta='x')
+        pregresp = crear_preguntarespuesta(historia=hist,respuesta='re',
+                                pregunta_object=preg,pregunta='preguntauno')
+        pr = PreguntaRespuesta.objects.get(respuesta='re')
+        mod = modificar_respuesta("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",pr.pk)
+        self.assertFalse(mod)
+        
     def test_modificar_respuesta_checkrespuesta(self):
         esp = Especialidad.objects.get(nombre_especialidad="especialidad")
         hist = Historia.objects.get(especialidad=esp)
